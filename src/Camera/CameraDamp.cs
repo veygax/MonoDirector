@@ -1,5 +1,4 @@
-﻿using NEP.MonoDirector.State;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NEP.MonoDirector.Cameras
 {

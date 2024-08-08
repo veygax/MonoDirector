@@ -2,8 +2,6 @@
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-using MK.Glow.URP;
-
 namespace NEP.MonoDirector.Cameras
 {
     [MelonLoader.RegisterTypeInIl2Cpp]
@@ -15,7 +13,6 @@ namespace NEP.MonoDirector.Cameras
 
         public LensDistortion LensDistortion { get; private set; }
         public ChromaticAberration ChromaticAberration { get; private set; }
-        public MKGlow MkGlow { get; private set; }
         public Vignette Vignette { get; private set; }
         public Bloom Bloom { get; private set; }
 
@@ -24,7 +21,6 @@ namespace NEP.MonoDirector.Cameras
             RenderingVolume = GetComponent<Volume>();
             LensDistortion = RenderingVolume.profile.components[0].Cast<LensDistortion>();
             ChromaticAberration = RenderingVolume.profile.components[1].Cast<ChromaticAberration>();
-            MkGlow = RenderingVolume.profile.components[4].Cast<MKGlow>();
         }
 
         public void EnableAll(bool enabled)

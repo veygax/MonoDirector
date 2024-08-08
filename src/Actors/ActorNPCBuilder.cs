@@ -1,21 +1,21 @@
-﻿using static MelonLoader.MelonLogger;
+﻿using UnityEngine;
+
+using Il2CppSLZ.Bonelab;
+using Il2CppSLZ.Marrow.Pool;
 
 using NEP.MonoDirector.Core;
-
-using UnityEngine;
-using SLZ.VFX;
 
 namespace NEP.MonoDirector.Actors
 {
     public static class ActorNPCBuilder
     {
-        public static void BuildNPCActor(SLZ.Marrow.Pool.AssetPoolee pooleeObject)
+        public static void BuildNPCActor(Poolee pooleeObject)
         {
             ActorNPC test = new ActorNPC(pooleeObject.transform);
             Director.instance.NPCCast.Add(test);
         }
 
-        public static void RemoveNPCActor(SLZ.Marrow.Pool.AssetPoolee pooleeObject)
+        public static void RemoveNPCActor(Poolee pooleeObject)
         {
             var gameObject = pooleeObject.gameObject;
             var vfxBlip = gameObject.GetComponent<Blip>();

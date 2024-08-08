@@ -1,6 +1,7 @@
-using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
+
+using Il2CppTMPro;
 
 using NEP.MonoDirector.Actors;
 

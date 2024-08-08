@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 
-using NEP.MonoDirector.Actors;
-
-using SLZ.VRMK;
 
 using UnityEngine;
 
-using Avatar = SLZ.VRMK.Avatar;
+using NEP.MonoDirector.Actors;
+
+using Avatar = Il2CppSLZ.VRMK.Avatar;
 
 namespace NEP.MonoDirector
 {

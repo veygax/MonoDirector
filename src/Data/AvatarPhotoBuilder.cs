@@ -1,12 +1,12 @@
-﻿using SLZ.Marrow.Warehouse;
+﻿using System.Collections.Generic;
+using System.IO;
 
-using UnityEngine.Experimental.Rendering;
+using Il2CppInterop.Runtime;
+
 using UnityEngine.Rendering.Universal;
 using UnityEngine;
 
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+using Il2CppSLZ.Marrow.Warehouse;
 
 namespace NEP.MonoDirector.Data
 {
@@ -38,7 +38,7 @@ namespace NEP.MonoDirector.Data
             {
                 foreach (var crate in pallet.Crates)
                 {
-                    if (crate.GetIl2CppType() != UnhollowerRuntimeLib.Il2CppType.Of<AvatarCrate>())
+                    if (crate.GetIl2CppType() != Il2CppType.Of<AvatarCrate>())
                     {
                         continue;
                     }
@@ -91,7 +91,7 @@ namespace NEP.MonoDirector.Data
         {
             GameObject copiedAvatar = GameObject.Instantiate(avatarObject);
 
-            SLZ.VRMK.Avatar avatar = copiedAvatar.GetComponent<SLZ.VRMK.Avatar>();
+            Il2CppSLZ.VRMK.Avatar avatar = copiedAvatar.GetComponent<Il2CppSLZ.VRMK.Avatar>();
 
             RenderTexture input = new RenderTexture(256, 256, -1, RenderTextureFormat.ARGB32);
 

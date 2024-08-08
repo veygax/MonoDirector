@@ -1,21 +1,17 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 using System.IO;
 
 using MelonLoader;
+
 using UnityEngine;
+
+using Il2CppSLZ.Marrow.Warehouse;
 
 using NEP.MonoDirector.Audio;
 using NEP.MonoDirector.Cameras;
 using NEP.MonoDirector.Core;
 using NEP.MonoDirector.UI;
-using NEP.MonoDirector.State;
-
-using BoneLib.BoneMenu.Elements;
 using NEP.MonoDirector.Data;
-using SLZ.Marrow.Warehouse;
-using Harmony;
 
 namespace NEP.MonoDirector
 {
@@ -57,7 +53,7 @@ namespace NEP.MonoDirector
 
             bundle = GetEmbeddedBundle();
 
-            BoneLib.Hooking.OnLevelInitialized += (info) => MonoDirectorInitialize();
+            BoneLib.Hooking.OnLevelLoaded += (info) => MonoDirectorInitialize();
             AssetWarehouse._onReady += new System.Action(() =>
             {
                 AudioClip[] sounds = WarehouseLoader.GetSounds().ToArray();

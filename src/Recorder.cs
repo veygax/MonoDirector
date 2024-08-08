@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+
 using MelonLoader;
-using NEP.MonoDirector.Actors;
-using NEP.MonoDirector.State;
 
 using UnityEngine;
 
-using Avatar = SLZ.VRMK.Avatar;
+using NEP.MonoDirector.Actors;
+using NEP.MonoDirector.State;
+
+using Avatar = Il2CppSLZ.VRMK.Avatar;
 
 namespace NEP.MonoDirector.Core
 {
@@ -120,7 +119,7 @@ namespace NEP.MonoDirector.Core
 
             recordingTime = 0f;
 
-            SetActor(Constants.rigManager.avatar);
+            SetActor(BoneLib.Player.RigManager.avatar);
 
             foreach (var castMember in Director.instance.Cast)
             {

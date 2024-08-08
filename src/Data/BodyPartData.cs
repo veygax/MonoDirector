@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-using SLZ.Rig;
-
 namespace NEP.MonoDirector.Data
 {
     public struct BodyPartData

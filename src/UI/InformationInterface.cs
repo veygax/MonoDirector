@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using NEP.MonoDirector.Core;
 
-using TMPro;
+using Il2CppTMPro;
+
+using NEP.MonoDirector.Core;
 using NEP.MonoDirector.State;
 
 namespace NEP.MonoDirector.UI
@@ -137,8 +138,8 @@ namespace NEP.MonoDirector.UI
         {
             micOffObject.SetActive(!Settings.World.useMicrophone);
 
-            transform.position = Vector3.Lerp(transform.position, BoneLib.Player.playerHead.position + BoneLib.Player.playerHead.forward, 16f * Time.deltaTime);
-            transform.LookAt(BoneLib.Player.playerHead);
+            transform.position = Vector3.Lerp(transform.position, BoneLib.Player.Head.position + BoneLib.Player.Head.forward, 16f * Time.deltaTime);
+            transform.LookAt(BoneLib.Player.Head);
         }
 
         public void OnSceneStart()

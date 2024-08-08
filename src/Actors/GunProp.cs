@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using BoneLib.Nullables;
+using BoneLib;
+using Il2CppSLZ.Marrow;
+using Il2CppSLZ.Marrow.Data;
+using Il2CppSLZ.Marrow.Pool;
 
 using NEP.MonoDirector.Data;
-using NEP.MonoDirector.Core;
 
-using SLZ.Marrow.Data;
-using SLZ.Marrow.Pool;
-using SLZ.Marrow.Warehouse;
-using SLZ.Props.Weapons;
-
-using UnityEngine;
-using SLZ.Interaction;
-using SLZ.Props;
-using static SLZ.Props.Weapons.Gun;
+using static Il2CppSLZ.Marrow.Gun;
 
 namespace NEP.MonoDirector.Actors
 {
@@ -76,38 +69,18 @@ namespace NEP.MonoDirector.Actors
 
         private void MuzzleFlash()
         {
-            Spawnable muzzleFlashSpawnable = new Spawnable()
-            {
-                crateRef = gun.muzzleFlareSpawnable.crateRef
-            };
-            AssetSpawner.Register(muzzleFlashSpawnable);
-            NullableMethodExtensions.PoolManager_Spawn(
-                muzzleFlashSpawnable,
+            HelperMethods.SpawnCrate(
+                gun.muzzleFlareSpawnable.crateRef,
                 gun.firePointTransform.position,
-                gun.firePointTransform.rotation,
-                null,
-                false,
-                null,
-                null,
-                null);
+                gun.firePointTransform.rotation);
         }
 
         private void EjectCasing()
         {
-            Spawnable cartridgeSpawnable = new Spawnable()
-            {
-                crateRef = gun.defaultCartridge.cartridgeCaseSpawnable.crateRef
-            };
-            AssetSpawner.Register(cartridgeSpawnable);
-            NullableMethodExtensions.PoolManager_Spawn(
-                cartridgeSpawnable,
-                gun.shellSpawnTransform.position,
-                gun.shellOrientationTransform.rotation,
-                null,
-                false,
-                null,
-                null,
-                null);
+            HelperMethods.SpawnCrate(
+                gun.defaultCartridge.cartridgeCaseSpawnable.crateRef,
+                gun.firePointTransform.position,
+                gun.firePointTransform.rotation);
         }
 
         public void InsertMagState(CartridgeData cartridgeData, MagazineData magazineData, int count)

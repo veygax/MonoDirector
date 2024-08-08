@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
-using SLZ.Rig;
+using Il2CppSLZ.Marrow;
 using NEP.MonoDirector.Core;
 
-using Avatar = SLZ.VRMK.Avatar;
+using Avatar = Il2CppSLZ.VRMK.Avatar;
 
 namespace NEP.MonoDirector.Patches
 {
     internal static class RigManager
     {
-        [HarmonyLib.HarmonyPatch(typeof(SLZ.Rig.RigManager), nameof(SLZ.Rig.RigManager.SwitchAvatar))]
+        [HarmonyLib.HarmonyPatch(typeof(Il2CppSLZ.Marrow.RigManager), nameof(Il2CppSLZ.Marrow.RigManager.SwitchAvatar))]
         internal static class SwitchAvatar
         {
             internal static void Postfix(Avatar newAvatar)

@@ -1,7 +1,8 @@
-
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
+
+using Il2CppTMPro;
+
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
-using NEP.MonoDirector.Core;
+
 using UnityEngine;
+
+using NEP.MonoDirector.Core;
 
 namespace NEP.MonoDirector.Data
 {

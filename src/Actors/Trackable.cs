@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using UnityEngine;
+
 using NEP.MonoDirector.Data;
 using NEP.MonoDirector.Core;
-
-using UnityEngine;
 
 namespace NEP.MonoDirector.Actors
 {

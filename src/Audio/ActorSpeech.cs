@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.Audio;
 
-using System.Linq;
-
-using Avatar = SLZ.VRMK.Avatar;
+using Avatar = Il2CppSLZ.VRMK.Avatar;
 
 namespace NEP.MonoDirector.Audio
 {

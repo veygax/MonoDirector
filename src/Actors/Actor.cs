@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
 using MelonLoader;
+
+using UnityEngine;
+
+using Il2CppSLZ.Marrow;
+
 using NEP.MonoDirector.Audio;
 using NEP.MonoDirector.Core;
 using NEP.MonoDirector.Data;
 
-using SLZ.Props;
-using SLZ.Rig;
-using SLZ.Vehicle;
-
-using UnityEngine;
-
-using Avatar = SLZ.VRMK.Avatar;
+using Avatar = Il2CppSLZ.VRMK.Avatar;
+using Il2CppSLZ.Marrow.Warehouse;
 
 namespace NEP.MonoDirector.Actors
 {
@@ -47,9 +48,9 @@ namespace NEP.MonoDirector.Actors
 #endif
         }
         
-        public Actor(SLZ.VRMK.Avatar avatar) : this()
+        public Actor(Il2CppSLZ.VRMK.Avatar avatar) : this()
         {
-            RigManager rigManager = BoneLib.Player.rigManager;
+            RigManager rigManager = BoneLib.Player.RigManager;
             avatarBarcode = rigManager.AvatarCrate.Barcode;
             
             playerAvatar = avatar;
@@ -74,8 +75,8 @@ namespace NEP.MonoDirector.Actors
         };
 
 
-        private string avatarBarcode;
-        public string AvatarBarcode => avatarBarcode;
+        private Barcode avatarBarcode;
+        public Barcode AvatarBarcode => avatarBarcode;
         
         public Avatar PlayerAvatar { get => playerAvatar; }
         public Avatar ClonedAvatar { get => clonedAvatar; }
@@ -96,7 +97,7 @@ namespace NEP.MonoDirector.Actors
         private ActorSpeech microphone;
         private Texture2D avatarPortrait;
 
-        private SLZ.Vehicle.Seat activeSeat;
+        private Il2CppSLZ.Marrow.Seat activeSeat;
 
         private Avatar playerAvatar;
         private Avatar clonedAvatar;
@@ -231,11 +232,11 @@ namespace NEP.MonoDirector.Actors
         public void CloneAvatar()
         {
             GameObject clonedAvatarObject = GameObject.Instantiate(playerAvatar.gameObject);
-            clonedAvatar = clonedAvatarObject.GetComponent<SLZ.VRMK.Avatar>();
+            clonedAvatar = clonedAvatarObject.GetComponent<Avatar>();
 
             clonedAvatar.gameObject.SetActive(true);
 
-            body = new ActorBody(this, Constants.rigManager.physicsRig);
+            body = new ActorBody(this, BoneLib.Player.PhysicsRig);
 
             // stops position overrides, if there are any
             clonedAvatar.GetComponent<Animator>().enabled = false;
@@ -244,7 +245,7 @@ namespace NEP.MonoDirector.Actors
 
             GameObject.Destroy(clonedAvatar.GetComponent<LODGroup>());
 
-            actorName = Constants.rigManager.AvatarCrate.Crate.Title;
+            actorName = BoneLib.Player.RigManager.AvatarCrate.Crate.Title;
             clonedAvatar.name = actorName;
             ShowHairMeshes(clonedAvatar);
 
@@ -291,7 +292,7 @@ namespace NEP.MonoDirector.Actors
             OwnedProps.Clear();
         }
 
-        public void ParentToSeat(SLZ.Vehicle.Seat seat)
+        public void ParentToSeat(Il2CppSLZ.Marrow.Seat seat)
         {
             activeSeat = seat;
 
@@ -314,16 +315,16 @@ namespace NEP.MonoDirector.Actors
             pelvis.SetParent(lastPelvisParent);
         }
 
-        private void ShowHairMeshes(SLZ.VRMK.Avatar avatar)
+        private void ShowHairMeshes(Avatar avatar)
         {
             if(avatar == null)
             {
-                MelonLogger.LogError("ShowHairMeshes: Avatar doesn't exist!");
+                Main.Logger.Error("ShowHairMeshes: Avatar doesn't exist!");
             }
 
             if(avatar.hairMeshes.Count == 0 || avatar.hairMeshes == null)
             {
-                MelonLogger.LogWarning("ShowHairMeshes: No hair meshes to clone.");
+                Main.Logger.Error("ShowHairMeshes: No hair meshes to clone.");
             }
 
             foreach (var mesh in avatar.hairMeshes)
@@ -360,7 +361,7 @@ namespace NEP.MonoDirector.Actors
                 tempFrames[headBone].position += Patches.PlayerAvatarArtPatches.UpdateAvatarHead.calculatedHeadOffset;
         }
 
-        private Transform[] GetAvatarBones(SLZ.VRMK.Avatar avatar)
+        private Transform[] GetAvatarBones(Avatar avatar)
         {
             Transform[] bones = new Transform[(int)HumanBodyBones.LastBone];
 
@@ -406,7 +407,7 @@ namespace NEP.MonoDirector.Actors
             //
             bytes.AddRange(BitConverter.GetBytes((short)VersionNumber.V1));
             
-            byte[] encodedBarcode = Encoding.UTF8.GetBytes(avatarBarcode);
+            byte[] encodedBarcode = Encoding.UTF8.GetBytes(avatarBarcode.ID);
             bytes.AddRange(BitConverter.GetBytes(encodedBarcode.Length));
             bytes.AddRange(encodedBarcode);
             bytes.AddRange(BitConverter.GetBytes(Recorder.instance.TakeTime));
@@ -441,7 +442,7 @@ namespace NEP.MonoDirector.Actors
                 byte[] strBytes = new byte[strLen];
                 stream.Read(strBytes, 0, strBytes.Length);
 
-                avatarBarcode = Encoding.UTF8.GetString(strBytes);
+                // avatarBarcode = Encoding.UTF8.GetString(strBytes);
                 
 #if DEBUG
                 Main.Logger.Msg($"[ACTOR]: Barcode: {avatarBarcode}");

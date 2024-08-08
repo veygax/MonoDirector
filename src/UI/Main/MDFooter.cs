@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using Il2CppTMPro;
+
 using UnityEngine;
 using UnityEngine.UI;
 

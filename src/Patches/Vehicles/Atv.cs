@@ -1,18 +1,18 @@
 ﻿using HarmonyLib;
+
+using Il2CppSLZ.Marrow;
+
 using NEP.MonoDirector;
 using NEP.MonoDirector.Actors;
 using NEP.MonoDirector.Core;
-using NEP.MonoDirector.Data;
-using SLZ.Rig;
-using static MelonLoader.MelonLogger;
 
 public static class Seat
 {
-    [HarmonyPatch(typeof(SLZ.Vehicle.Seat))]
-    [HarmonyPatch(nameof(SLZ.Vehicle.Seat.Register))]
+    [HarmonyPatch(typeof(Il2CppSLZ.Marrow.Seat))]
+    [HarmonyPatch(nameof(Il2CppSLZ.Marrow.Seat.Register))]
     public static class Register
     {
-        public static void Postfix(SLZ.Vehicle.Seat __instance, RigManager rM)
+        public static void Postfix(Il2CppSLZ.Marrow.Seat __instance, RigManager rM)
         {
             Main.Logger.Msg("Register Rig");
             Actor activeActor = Recorder.instance.ActiveActor;
@@ -26,8 +26,8 @@ public static class Seat
         }
     }
 
-    [HarmonyPatch(typeof(SLZ.Vehicle.Seat))]
-    [HarmonyPatch(nameof(SLZ.Vehicle.Seat.DeRegister))]
+    [HarmonyPatch(typeof(Il2CppSLZ.Marrow.Seat))]
+    [HarmonyPatch(nameof(Il2CppSLZ.Marrow.Seat.DeRegister))]
     public static class DeRegister
     {
         public static void Postfix()

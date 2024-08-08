@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using NEP.MonoDirector.State;
-using SLZ.Interaction;
+using Il2CppSLZ.Marrow;
 using UnityEngine;
 
 namespace NEP.MonoDirector.Tools

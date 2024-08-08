@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
+using System.Collections.Generic;
+
+using BoneLib;
+
+using NEP.MonoDirector.Actors;
 using NEP.MonoDirector.Cameras;
 using NEP.MonoDirector.State;
-
-using System.Collections.Generic;
-using NEP.MonoDirector.Actors;
-using UnityEngine.Splines;
-using BoneLib;
 
 namespace NEP.MonoDirector.Core
 {
@@ -119,8 +119,8 @@ namespace NEP.MonoDirector.Core
         public void Recast(Actor actor)
         {
             Vector3 actorPosition = actor.Frames[0].TransformFrames[0].position;
-            Player.rigManager.Teleport(actorPosition, true);
-            Player.rigManager.SwapAvatar(actor.ClonedAvatar);
+            Player.RigManager.Teleport(actorPosition, true);
+            Player.RigManager.SwapAvatar(actor.ClonedAvatar);
 
             // Any props recorded by this actor must be removed if we're recasting
             // If we don't, the props will still play, but they will be floating in the air aimlessly.

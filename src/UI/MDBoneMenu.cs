@@ -1,61 +1,57 @@
 using BoneLib.BoneMenu;
-using BoneLib.BoneMenu.Elements;
+
+using UnityEngine;
 
 using NEP.MonoDirector.Cameras;
 using NEP.MonoDirector.Core;
 using NEP.MonoDirector.State;
 
-using UnityEngine;
-
-using SLZ.Rig;
-using BoneLib;
-
 namespace NEP.MonoDirector.UI
 {
     internal static class MDBoneMenu
     {
-        internal static MenuCategory rootCategory;
+        internal static Page rootCategory;
 
-        internal static MenuCategory mdCategory;
+        internal static Page mdCategory;
 
-        internal static MenuCategory playbackCategory;
-        internal static MenuCategory actorCategory;
-        internal static MenuCategory settingsCategory;
+        internal static Page playbackCategory;
+        internal static Page actorCategory;
+        internal static Page settingsCategory;
 
         internal static void Initialize()
         {
-            rootCategory = MenuManager.CreateCategory("Not Enough Photons", Color.white);
+            rootCategory = Page.Root.CreatePage("Not Enough Photons", Color.white);
 
-            mdCategory = rootCategory.CreateCategory("Mono<color=red>Director</color>", Color.white);
+            mdCategory = rootCategory.CreatePage("Mono<color=red>Director</color>", Color.white);
 
-            mdCategory.CreateFunctionElement(
+            mdCategory.CreateFunction(
                 "Record", 
                 Color.red, 
                 () => Director.instance.Record()
             );
             
-            mdCategory.CreateFunctionElement(
+            mdCategory.CreateFunction(
                 "Play", 
                 Color.green, 
                 () => Director.instance.Play()
             );
             
-            mdCategory.CreateFunctionElement(
+            mdCategory.CreateFunction(
                 "Stop", 
                 Color.red, 
                 () => Director.instance.Stop()
             );
 
-            mdCategory.CreateFunctionElement("Actors", Color.white, () => { MDMenu.instance.gameObject.SetActive(true); });
-            settingsCategory = mdCategory.CreateCategory("Settings", Color.white);
+            mdCategory.CreateFunction("Actors", Color.white, () => { MDMenu.instance.gameObject.SetActive(true); });
+            settingsCategory = mdCategory.CreatePage("Settings", Color.white);
 
             // BuildActorMenu(actorCategory);
             BuildSettingsMenu(settingsCategory);
         }
 
-        private static void BuildActorMenu(MenuCategory category)
+        private static void BuildActorMenu(Page category)
         {
-            category.CreateFunctionElement(
+            category.CreateFunction(
                 "Show Caster Menu", 
                 Color.white,
                 () => 
@@ -65,44 +61,44 @@ namespace NEP.MonoDirector.UI
             );
         }
 
-        private static void BuildSettingsMenu(MenuCategory category)
+        private static void BuildSettingsMenu(Page category)
         {
-            MenuCategory audioCategory = category.CreateCategory("Audio", Color.white);
-            MenuCategory cameraCategory = category.CreateCategory("Camera", Color.white);
-            MenuCategory toolCategory = category.CreateCategory("Tools", Color.white);
-            MenuCategory uiCategory = category.CreateCategory("UI", Color.white);
+            Page audioCategory = category.CreatePage("Audio", Color.white);
+            Page cameraCategory = category.CreatePage("Camera", Color.white);
+            Page toolCategory = category.CreatePage("Tools", Color.white);
+            Page uiCategory = category.CreatePage("UI", Color.white);
 
-            MenuCategory headModeCategory = cameraCategory.CreateCategory("Head Mode Settings", Color.white);
-            MenuCategory freeCamCategory = cameraCategory.CreateCategory("Free Camera Settings", Color.white);
-            MenuCategory vfxCategory = cameraCategory.CreateCategory("VFX", Color.white);
-            
-            #if DEBUG
-            MenuCategory debugCategory = category.CreateCategory("DEBUG", Color.red);
+            Page headModeCategory = cameraCategory.CreatePage("Head Mode Settings", Color.white);
+            Page freeCamCategory = cameraCategory.CreatePage("Free Camera Settings", Color.white);
+            Page vfxCategory = cameraCategory.CreatePage("VFX", Color.white);
+
+#if DEBUG
+            Page debugCategory = category.CreatePage("DEBUG", Color.red);
             BuildDebugCategory(debugCategory);
-            #endif
+#endif
 
-            audioCategory.CreateBoolElement(
+            audioCategory.CreateBool(
                 "Use Microphone", 
                 Color.white, 
                 false,
                 value => Settings.World.useMicrophone = value
             );
             
-            audioCategory.CreateBoolElement(
+            audioCategory.CreateBool(
                 "Mic Playback", 
                 Color.white, 
                 false,
                 value => Settings.World.micPlayback = value
             );
 
-            cameraCategory.CreateEnumElement(
+            cameraCategory.CreateEnum(
                 "Camera Mode", 
                 Color.white, 
                 CameraMode.None,
-                (mode) => CameraRigManager.Instance.CameraMode = mode
+                (mode) => CameraRigManager.Instance.CameraMode = (CameraMode)mode
             );
 
-            cameraCategory.CreateBoolElement(
+            cameraCategory.CreateBool(
                 "Kinematic On Release", 
                 Color.white, 
                 false,
@@ -119,9 +115,9 @@ namespace NEP.MonoDirector.UI
             BuildUIMenu(uiCategory);
         }
 
-        private static void BuildToolCategory(MenuCategory category)
+        private static void BuildToolCategory(Page category)
         {
-            category.CreateFloatElement(
+            category.CreateFloat(
                 "Playback Speed",
                 Color.white,
                 1f,
@@ -131,7 +127,7 @@ namespace NEP.MonoDirector.UI
                 value => Playback.Instance.PlaybackRate = value
             );
 
-            category.CreateIntElement(
+            category.CreateInt(
                 "Delay",
                 Color.white,
                 5,
@@ -141,7 +137,7 @@ namespace NEP.MonoDirector.UI
                 value => Settings.World.delay = value
             );
 
-            category.CreateIntElement(
+            category.CreateInt(
                 "FPS",
                 Color.white,
                 60,
@@ -151,14 +147,14 @@ namespace NEP.MonoDirector.UI
                 value => Settings.World.fps = value
             );
 
-            category.CreateBoolElement(
+            category.CreateBool(
                 "Ignore Slomo",
                 Color.white,
                 false,
                 value => Settings.World.ignoreSlomo = value
             );
 
-            category.CreateBoolElement(
+            category.CreateBool(
                 "Temporal Scaling",
                 Color.white,
                 true,
@@ -166,30 +162,30 @@ namespace NEP.MonoDirector.UI
             );
         }
 
-        private static void BuildUIMenu(MenuCategory category)
+        private static void BuildUIMenu(Page category)
         {
-            category.CreateBoolElement(
+            category.CreateBool(
                 "Show UI",
                 Color.white,
                 false,
                 value => InformationInterface.Instance.ShowUI = value
             );
 
-            category.CreateBoolElement(
+            category.CreateBool(
                 "Show Timecode",
                 Color.white,
                 false,
                 value => InformationInterface.Instance.ShowTimecode = value
             );
 
-            category.CreateBoolElement(
+            category.CreateBool(
                 "Show Play Mode",
                 Color.white,
                 false,
                 value => InformationInterface.Instance.ShowPlaymode = value
             );
 
-            category.CreateBoolElement(
+            category.CreateBool(
                 "Show Icons",
                 Color.white,
                 false,
@@ -226,9 +222,9 @@ namespace NEP.MonoDirector.UI
         }
 #endif
         
-        private static void BuildHeadModeCategory(MenuCategory headModeCategory)
+        private static void BuildHeadModeCategory(Page headModeCategory)
         {
-            headModeCategory.CreateFloatElement(
+            headModeCategory.CreateFloat(
                 "Interpolation", 
                 Color.white, 
                 4f, 
@@ -238,17 +234,17 @@ namespace NEP.MonoDirector.UI
                 value => CameraRigManager.Instance.CameraSmoothness = value
             );
             
-            headModeCategory.CreateEnumElement(
+            headModeCategory.CreateEnum(
                 "Position", 
                 Color.white, 
                 BodyPart.Head,
-                bone => CameraRigManager.Instance.FollowCamera.SetFollowBone(bone)
+                bone => CameraRigManager.Instance.FollowCamera.SetFollowBone((BodyPart)bone)
             );
         }
 
-        private static void BuildFreeModeCategory(MenuCategory freeModeCategory)
+        private static void BuildFreeModeCategory(Page freeModeCategory)
         {
-            freeModeCategory.CreateFloatElement(
+            freeModeCategory.CreateFloat(
                 "Mouse Sens.",
                 Color.white,
                 1f,
@@ -257,7 +253,7 @@ namespace NEP.MonoDirector.UI
                 float.PositiveInfinity,
                 (value) => CameraRigManager.Instance.MouseSensitivity = value);
 
-            freeModeCategory.CreateFloatElement(
+            freeModeCategory.CreateFloat(
                 "Mouse Smoothing",
                 Color.white,
                 1f,
@@ -267,7 +263,7 @@ namespace NEP.MonoDirector.UI
                 (value) => CameraRigManager.Instance.MouseSmoothness = value
             );
 
-            freeModeCategory.CreateFloatElement(
+            freeModeCategory.CreateFloat(
                 "Slow Speed",
                 Color.white,
                 5f,
@@ -277,7 +273,7 @@ namespace NEP.MonoDirector.UI
                 (value) => CameraRigManager.Instance.SlowSpeed = value
             );
 
-            freeModeCategory.CreateFloatElement(
+            freeModeCategory.CreateFloat(
                 "Fast Speed",
                 Color.white,
                 10f,
@@ -287,7 +283,7 @@ namespace NEP.MonoDirector.UI
                 (value) => CameraRigManager.Instance.FastSpeed = value
             );
 
-            freeModeCategory.CreateFloatElement(
+            freeModeCategory.CreateFloat(
                 "Max Speed",
                 Color.white,
                 15f,
@@ -297,7 +293,7 @@ namespace NEP.MonoDirector.UI
                 (value) => CameraRigManager.Instance.MaxSpeed = value
             );
 
-            freeModeCategory.CreateFloatElement(
+            freeModeCategory.CreateFloat(
                 "Friction",
                 Color.white,
                 5f,
@@ -308,9 +304,9 @@ namespace NEP.MonoDirector.UI
             );
         }
 
-        private static void BuildVFXCategory(MenuCategory vfxCategory)
+        private static void BuildVFXCategory(Page vfxCategory)
         {
-            vfxCategory.CreateBoolElement(
+            vfxCategory.CreateBool(
                 "Lens Distortion", 
                 Color.white, 
                 true,
@@ -319,7 +315,7 @@ namespace NEP.MonoDirector.UI
             
             //vfxCategory.CreateBoolElement("Motion Blur", Color.white, true, (value) => CameraRigManager.Instance.CameraVolume.MotionBlur.active = value);
             
-            vfxCategory.CreateBoolElement(
+            vfxCategory.CreateBool(
                 "Chromatic Aberration", 
                 Color.white, 
                 true,

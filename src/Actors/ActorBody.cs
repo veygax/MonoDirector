@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
 
-using NEP.MonoDirector.Audio;
-
-
-using SLZ.Combat;
-using SLZ.Rig;
-using SLZ.SFX;
-
 using UnityEngine;
 
-using Avatar = SLZ.VRMK.Avatar;
+using Il2CppSLZ.Marrow;
+
+using NEP.MonoDirector.Audio;
+
+using Avatar = Il2CppSLZ.VRMK.Avatar;
 
 namespace NEP.MonoDirector.Actors
 {
@@ -140,15 +137,6 @@ namespace NEP.MonoDirector.Actors
             hips.transform.rotation = Quaternion.identity;
             leftHand.transform.rotation = Quaternion.identity;
             rightHand.transform.rotation = Quaternion.identity;
-
-            ImpactPropertiesManager vfxManager = physicsRig.GetComponent<ImpactPropertiesManager>();
-
-            headVFX.surfaceData = vfxManager.surfaceData;
-            chestVFX.surfaceData = vfxManager.surfaceData;
-            spineVFX.surfaceData = vfxManager.surfaceData;
-            hipVFX.surfaceData = vfxManager.surfaceData;
-            leftHandVFX.surfaceData = vfxManager.surfaceData;
-            rightHandVFX.surfaceData = vfxManager.surfaceData;
         }
 
         private void SetupAudio()
@@ -159,16 +147,16 @@ namespace NEP.MonoDirector.Actors
 
             Avatar avatar = actor.PlayerAvatar;
 
-            UnhollowerBaseLib.Il2CppReferenceArray<AudioClip> avatarWalkingClips = avatar.footstepsWalk?.audioClips;
-            UnhollowerBaseLib.Il2CppReferenceArray<AudioClip> avatarJoggingClips = avatar.footstepsJog?.audioClips;
+            // UnhollowerBaseLib.Il2CppReferenceArray<AudioClip> avatarWalkingClips = avatar.footstepsWalk?.audioClips;
+            // UnhollowerBaseLib.Il2CppReferenceArray<AudioClip> avatarJoggingClips = avatar.footstepsJog?.audioClips;
 
-            FootstepSFX sfx = GameObject.FindObjectOfType<FootstepSFX>();
+            // FootstepSFX sfx = GameObject.FindObjectOfType<FootstepSFX>();
 
-            AudioClip[] targetWalkClips = avatarWalkingClips != null && avatarWalkingClips.Length > 0 ? avatarWalkingClips : sfx.walkConcrete;
-            AudioClip[] targetJogClips = avatarJoggingClips != null && avatarJoggingClips.Length > 0 ? avatarJoggingClips : sfx.runConcrete;
+            // AudioClip[] targetWalkClips = avatarWalkingClips != null && avatarWalkingClips.Length > 0 ? avatarWalkingClips : sfx.walkConcrete;
+            // AudioClip[] targetJogClips = avatarJoggingClips != null && avatarJoggingClips.Length > 0 ? avatarJoggingClips : sfx.runConcrete;
 
-            footstepWalkAudio.AddRange(targetWalkClips);
-            footstepJogAudio.AddRange(targetJogClips);
+            // footstepWalkAudio.AddRange(targetWalkClips);
+            // footstepJogAudio.AddRange(targetJogClips);
 
             //landingAudio.AddRange(avatar.highFallOntoFeet.audioClips);
         }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.IO;
-using Il2CppSystem;
+﻿using System.Collections;
+
 using MelonLoader;
-using NEP.MonoDirector.Actors;
-using NEP.MonoDirector.State;
 
 using UnityEngine;
+
+using NEP.MonoDirector.Actors;
+using NEP.MonoDirector.State;
 
 namespace NEP.MonoDirector.Core
 {

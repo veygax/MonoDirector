@@ -1,9 +1,4 @@
-﻿ using BoneLib;
-using NEP.MonoDirector.Core;
-using SLZ.Bonelab;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NEP.MonoDirector.Cameras
 {
@@ -13,6 +8,8 @@ namespace NEP.MonoDirector.Cameras
     [MelonLoader.RegisterTypeInIl2Cpp]
     public class FreeCamera : MonoBehaviour
     {
+        public FreeCamera(System.IntPtr ptr) : base(ptr) { }
+
         public class Settings
         {
             public float slowSpeed;
@@ -30,8 +27,6 @@ namespace NEP.MonoDirector.Cameras
 
             public float shakeMultiplier;
         }
-
-        public FreeCamera(System.IntPtr ptr) : base(ptr) { }
 
         public Settings CameraSettings;
 
