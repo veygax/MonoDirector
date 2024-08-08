@@ -59,7 +59,7 @@ namespace NEP.MonoDirector.Data
                 return;
             }
 
-            Barcode mainBarcode = (Barcode)"NotEnoughPhotons.MonoDirector";
+            Barcode mainBarcode = new Barcode("NotEnoughPhotons.MonoDirector");
             if (!AssetWarehouse.Instance.HasPallet(mainBarcode))
             {
                 Main.Logger.Error("Pallet doesn't exist in registry.");

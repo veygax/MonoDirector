@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.IO;
 
 using MelonLoader;
@@ -12,6 +14,7 @@ using NEP.MonoDirector.Cameras;
 using NEP.MonoDirector.Core;
 using NEP.MonoDirector.UI;
 using NEP.MonoDirector.Data;
+
 
 namespace NEP.MonoDirector
 {

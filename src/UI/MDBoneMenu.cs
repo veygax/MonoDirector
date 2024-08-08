@@ -5,6 +5,7 @@ using UnityEngine;
 using NEP.MonoDirector.Cameras;
 using NEP.MonoDirector.Core;
 using NEP.MonoDirector.State;
+using Il2CppSLZ.Marrow;
 
 namespace NEP.MonoDirector.UI
 {
@@ -194,26 +195,26 @@ namespace NEP.MonoDirector.UI
         }
 
 #if DEBUG
-        private static void BuildDebugCategory(MenuCategory category)
+        private static void BuildDebugCategory(Page category)
         {
-            category.CreateFunctionElement(
+            category.CreateFunction(
                 "Duplicate Player",
                 Color.white,
                 () =>
                 {
-                    RigManager rigManager = BoneLib.Player.rigManager;
-                    rigManager.AvatarCrate.Crate.Spawn(rigManager.ControllerRig.m_head.position, Quaternion.identity);
+                    //RigManager rigManager = BoneLib.Player.RigManager;
+                    //rigManager.AvatarCrate.Crate.Spawn(rigManager.ControllerRig.m_head.position, Quaternion.identity);
                 }
             );
             
-            category.CreateBoolElement(
+            category.CreateBool(
                 "Debug Mode", 
                 Color.white, 
                 false,
                 value => Settings.Debug.debugEnabled = value
             );
             
-            category.CreateBoolElement(
+            category.CreateBool(
                 "Use Debug Keys", 
                 Color.white, 
                 false, 

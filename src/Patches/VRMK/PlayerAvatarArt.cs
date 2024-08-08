@@ -14,13 +14,15 @@ namespace NEP.MonoDirector.Patches
             
             internal static void Prefix(Il2CppSLZ.Marrow.PlayerAvatarArt __instance)
             {
-                Transform head = __instance._openCtrlRig.avatar.animator.GetBoneTransform(HumanBodyBones.Head);
+                Il2CppSLZ.Marrow.RigManager rigManager = BoneLib.Player.RigManager;
+                Transform head = rigManager.avatar.animator.GetBoneTransform(HumanBodyBones.Head);
                 preTransformHead = head.position;
             }
 
             internal static void Postfix(Il2CppSLZ.Marrow.PlayerAvatarArt __instance)
             {
-                Transform head = __instance._openCtrlRig.avatar.animator.GetBoneTransform(HumanBodyBones.Head);
+                Il2CppSLZ.Marrow.RigManager rigManager = BoneLib.Player.RigManager;
+                Transform head = rigManager.avatar.animator.GetBoneTransform(HumanBodyBones.Head);
                 postTransformHead = head.position;
 
                 calculatedHeadOffset = preTransformHead - postTransformHead;

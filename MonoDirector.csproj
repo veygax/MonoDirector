@@ -68,6 +68,9 @@
     <Reference Include="Il2CppSLZ.Marrow">
       <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\BONELAB\MelonLoader\Il2CppAssemblies\Il2CppSLZ.Marrow.dll</HintPath>
     </Reference>
+    <Reference Include="Il2CppSystem">
+      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\BONELAB\MelonLoader\Il2CppAssemblies\Il2CppSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Il2CppUniTask">
       <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\BONELAB\MelonLoader\Il2CppAssemblies\Il2CppUniTask.dll</HintPath>
     </Reference>
@@ -126,5 +129,8 @@
       <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\BONELAB\MelonLoader\Il2CppAssemblies\UnityEngine.UIElementsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="ECHO Copying mod to $(BONELAB_DIR)\Mods&#xD;&#xA;COPY &quot;$(TargetPath)&quot; &quot;$(BONELAB_DIR)\Mods\$(ProjectName).dll&quot;" />
+	</Target>
   <PropertyGroup />
 </Project>

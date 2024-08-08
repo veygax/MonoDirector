@@ -32,9 +32,6 @@ namespace NEP.MonoDirector.Actors
             baseCube.GetComponent<BoxCollider>().enabled = false;
             baseCube.transform.localScale = Vector3.one * 0.03F;
 
-            MeshRenderer renderer = baseCube.GetComponent<MeshRenderer>();
-            renderer.material = new Material(Shader.Find(Jevil.Const.UrpLitName));
-
             GameObject empty = new GameObject("MONODIRECTOR DEBUG VIZ");
             baseCube.transform.parent = empty.transform;
             
