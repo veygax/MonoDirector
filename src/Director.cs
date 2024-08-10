@@ -37,6 +37,11 @@ namespace NEP.MonoDirector.Core
         public PlayheadState PlayState { get => _playState; }
         public PlayheadState LastPlayState { get => _lastPlayState; }
 
+        public bool InNoMode => _inNoMode;
+        public bool InPlaybackMode => _inPlaybackMode;
+        public bool InRecordingMode => _inRecordingMode;
+        public bool InPhotoMode => _inPhotoMode;
+
         public CaptureType CaptureType { get => _captureType; }
 
         public Actor ActiveActor => _activeActor;
@@ -50,6 +55,11 @@ namespace NEP.MonoDirector.Core
 
         private PlayheadState _playState;
         private PlayheadState _lastPlayState;
+
+        private bool _inNoMode;
+        private bool _inPlaybackMode;
+        private bool _inRecordingMode;
+        private bool _inPhotoMode;
 
         private CaptureType _captureType = CaptureType.CaptureActor;
 
@@ -120,6 +130,33 @@ namespace NEP.MonoDirector.Core
         public void Stop()
         {
             SetPlayState(null);
+        }
+
+        public void DetermineMode(PlayheadState state)
+        {
+            if (state == null)
+            {
+                _inNoMode = true;
+                _inPlaybackMode = false;
+                _inRecordingMode = false;
+                _inPhotoMode = false;
+                
+                return;
+            }
+
+            if (state is PlaybackState)
+            {
+                _inPlaybackMode = true;
+                _inRecordingMode = false;
+                _inPhotoMode = false;
+            }
+
+            if (state is RecordingState)
+            {
+                _inPlaybackMode = false;
+                _inRecordingMode = true;
+                _inPhotoMode = false;
+            }
         }
 
         public void StageActor(Avatar avatar)
@@ -241,6 +278,11 @@ namespace NEP.MonoDirector.Core
         public void AddProps(Prop[] props)
         {
             _worldProps.AddRange(props);
+        }
+
+        public void RemoveRecordingProp(Prop prop)
+        {
+            _recordingProps.Remove(prop);
         }
         
         public void ClearLastProps()

@@ -173,17 +173,12 @@ namespace NEP.MonoDirector.Actors
 
         public virtual void RecordAction(Action action)
         {
-            // TODO:
-            // Adjust for new state machine system
-            //if (Director.PlayState == State.PlayheadState.Recording)
-            //{
-            //    if (!Director.instance.RecordingProps.Contains(this))
-            //    {
-            //        return;
-            //    }
+            if (!Director.Instance.InRecordingMode)
+            {
+                return;
+            }
 
-            //    actionFrames.Add(new ActionFrame(action, Recorder.instance.RecordingTime));
-            //}
+            actionFrames.Add(new ActionFrame(action, Director.Instance.Playhead.RecordingTime));
         }
 
         public void ResetTicks()

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
+using Il2CppSLZ.Bonelab;
 using Il2CppSLZ.Marrow;
 
 using NEP.MonoDirector.Core;
-using Il2CppSLZ.Bonelab;
 
 namespace NEP.MonoDirector.Actors
 {
@@ -117,20 +117,16 @@ namespace NEP.MonoDirector.Actors
             Prop actorProp = gameObject.GetComponent<Prop>();
             bool isProp = actorProp != null;
 
-            // TODO:
-            // New state machine system
-            //if (isProp && Director.PlayState == State.PlayheadState.Stopped)
-            //{
-            //    MelonLoader.MelonLogger.Msg($"Removing component from {gameObject.name}");
+            if (isProp && Director.Instance.InNoMode)
+            {
+                Prop prop = actorProp;
+                prop.InteractableRigidbody.isKinematic = false;
+                Director.Instance.RemoveRecordingProp(prop);
+                GameObject.Destroy(prop);
+                vfxBlip?.CallDespawnEffect();
 
-            //    var prop = actorProp;
-            //    prop.InteractableRigidbody.isKinematic = false;
-            //    Director.instance.RecordingProps.Remove(prop);
-            //    GameObject.Destroy(prop);
-            //    vfxBlip?.CallDespawnEffect();
-
-            //    Events.OnPropRemoved?.Invoke(prop);
-            //}
+                Events.OnPropRemoved?.Invoke(prop);
+            }
         }
     }
 }

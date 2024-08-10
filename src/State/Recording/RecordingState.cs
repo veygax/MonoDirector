@@ -31,6 +31,8 @@ namespace NEP.MonoDirector.State.Recording
             {
                 castMember.Microphone.Playback();
             }
+
+            Director.Instance.DetermineMode(this);
         }
 
         public override void Process()

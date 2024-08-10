@@ -92,12 +92,12 @@ namespace NEP.MonoDirector.Actors
 
         public virtual void RecordAction(Action action)
         {
-            // TODO:
-            // Use new state machine system
-            //if (Director.PlayState == State.PlayheadState.Recording)
-            //{
-            //    actionFrames.Add(new ActionFrame(action, Recorder.instance.RecordingTime));
-            //}
+            if (!Director.Instance.InRecordingMode)
+            {
+                return;
+            }
+
+            actionFrames.Add(new ActionFrame(action, Director.Instance.Playhead.RecordingTime));
         }
 
         public void SetTransform(Transform transform)

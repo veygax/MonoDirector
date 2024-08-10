@@ -9,6 +9,11 @@ namespace NEP.MonoDirector.State.Playback
 {
     public sealed class PlaybackState : PlayheadState
     {
+        public override void Start()
+        {
+            Director.Instance.DetermineMode(this);
+        }
+
         public override void Process()
         {
             if (Director.Instance.Playhead.PlaybackTime > Director.Instance.Playhead.TakeTime)

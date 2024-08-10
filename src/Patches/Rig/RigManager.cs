@@ -13,15 +13,14 @@ namespace NEP.MonoDirector.Patches
             internal static void Postfix(Avatar newAvatar)
             {
                 // TODO:
-                // Adjust for new state machine system
                 // See about multiple actors with new control flow
                 // This will remain broken until I figure out a way
                 // to pass a list around with this new system.
 
-                //if(Director.PlayState != State.PlayheadState.Recording)
-                //{
-                //    return;
-                //}
+                if(Director.Instance.InRecordingMode)
+                {
+                    return;
+                }
 
                 Actor activeActor = Director.Instance.ActiveActor;
                 activeActor.RecordAction(new System.Action(() => activeActor.SwitchToActor(activeActor)));
