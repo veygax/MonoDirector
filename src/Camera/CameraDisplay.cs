@@ -24,7 +24,7 @@ namespace NEP.MonoDirector.Cameras
             FollowCamera = gameObject.AddComponent<FollowCamera>();
             CameraVolume = gameObject.AddComponent<CameraVolume>();
 
-            FOVController.SetCamera(GetComponent<Camera>());
+            FOVController.SetCamera(GetComponent<UnityEngine.Camera>());
         }
 
         private void Start()

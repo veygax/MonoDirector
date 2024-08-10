@@ -1,11 +1,8 @@
-﻿using Il2CppSLZ.Bonelab;
+﻿using UnityEngine;
 
-using UnityEngine;
-
-using NEP.MonoDirector.Patches;
+using Il2CppSLZ.Bonelab;
 
 using RigManager = Il2CppSLZ.Marrow.RigManager;
-using NEP.MonoDirector.src.Camera;
 
 namespace NEP.MonoDirector.Cameras
 {

@@ -28,7 +28,7 @@ namespace NEP.MonoDirector.State.Playback
             }
 
             Director.Instance.AnimateAll();
-            Director.Instance.Playhead.Move(Settings.World.playbackRate * Time.deltaTime);
+            Director.Instance.Playhead.Move(Settings.World.PlaybackRate * Time.deltaTime);
             Events.OnPlaybackTick?.Invoke();
         }
 

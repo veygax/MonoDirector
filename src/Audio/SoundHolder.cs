@@ -2,8 +2,9 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using NEP.MonoDirector.Data;
 using Il2CppSLZ.Marrow.Pool;
+
+using NEP.MonoDirector.Data;
 
 namespace NEP.MonoDirector.Audio
 {

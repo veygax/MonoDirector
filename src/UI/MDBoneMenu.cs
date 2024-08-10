@@ -82,14 +82,14 @@ namespace NEP.MonoDirector.UI
                 "Use Microphone", 
                 Color.white, 
                 false,
-                value => Settings.World.useMicrophone = value
+                value => Settings.World.UseMicrophone = value
             );
             
             audioCategory.CreateBool(
                 "Mic Playback", 
                 Color.white, 
                 false,
-                value => Settings.World.micPlayback = value
+                value => Settings.World.MicPlayback = value
             );
 
             cameraCategory.CreateEnum(
@@ -103,7 +103,7 @@ namespace NEP.MonoDirector.UI
                 "Kinematic On Release", 
                 Color.white, 
                 false,
-                (value) => Settings.Camera.handheldKinematicOnRelease = value
+                (value) => Settings.Camera.KinematicOnRelease = value
             );
 
             BuildHeadModeCategory(headModeCategory);
@@ -135,7 +135,7 @@ namespace NEP.MonoDirector.UI
                 1,
                 0,
                 30,
-                value => Settings.World.delay = value
+                value => Settings.World.Delay = value
             );
 
             category.CreateInt(
@@ -145,21 +145,21 @@ namespace NEP.MonoDirector.UI
                 5,
                 5,
                 160,
-                value => Settings.World.fps = value
+                value => Settings.World.FPS = value
             );
 
             category.CreateBool(
                 "Ignore Slomo",
                 Color.white,
                 false,
-                value => Settings.World.ignoreSlomo = value
+                value => Settings.World.IgnoreSlowmo = value
             );
 
             category.CreateBool(
                 "Temporal Scaling",
                 Color.white,
                 true,
-                value => Settings.World.temporalScaling = value
+                value => Settings.World.TemporalScaling = value
             );
         }
 
@@ -211,14 +211,14 @@ namespace NEP.MonoDirector.UI
                 "Debug Mode", 
                 Color.white, 
                 false,
-                value => Settings.Debug.debugEnabled = value
+                value => Settings.Debug.DebugEnabled = value
             );
             
             category.CreateBool(
                 "Use Debug Keys", 
                 Color.white, 
                 false, 
-                value => Settings.Debug.useKeys = value
+                value => Settings.Debug.UseKeys = value
             );
         }
 #endif

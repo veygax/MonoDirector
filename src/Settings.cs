@@ -4,31 +4,31 @@
     {
         public static class Camera
         {
-            public static float cameraSpeedSlow;
-            public static float cameraSpeedFast;
-            public static float cameraSmoothRotationDelta;
-            public static bool useHeadCamera;
-            public static bool handheldLockXAxis;
-            public static bool handheldLockYAxis;
-            public static bool handheldLockZAxis;
-            public static bool handheldKinematicOnRelease;
+            public static float SlowSpeed;
+            public static float FastSpeed;
+            public static float RotationSmoothness;
+            public static bool UseHeadCamera;
+            public static bool LockXAxis;
+            public static bool LockYAxis;
+            public static bool LockZAxis;
+            public static bool KinematicOnRelease;
         }
 
         public static class World
         {
-            public static int delay = 2;
-            public static bool useMicrophone = false;
-            public static bool micPlayback = false;
-            public static float playbackRate = 1f;
-            public static float fps = 60f;
-            public static bool ignoreSlomo = false;
-            public static bool temporalScaling = false;
+            public static int Delay = 2;
+            public static bool UseMicrophone = false;
+            public static bool MicPlayback = false;
+            public static float PlaybackRate = 1f;
+            public static float FPS = 60f;
+            public static bool IgnoreSlowmo = false;
+            public static bool TemporalScaling = false;
         }
 
         public static class Debug
         {
-            public static bool debugEnabled = true;
-            public static bool useKeys = true;
+            public static bool DebugEnabled = true;
+            public static bool UseKeys = true;
         }
     }
 }

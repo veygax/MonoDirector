@@ -136,7 +136,7 @@ namespace NEP.MonoDirector.UI
 
         private void Update()
         {
-            micOffObject.SetActive(!Settings.World.useMicrophone);
+            micOffObject.SetActive(!Settings.World.UseMicrophone);
 
             transform.position = Vector3.Lerp(transform.position, BoneLib.Player.Head.position + BoneLib.Player.Head.forward, 16f * Time.deltaTime);
             transform.LookAt(BoneLib.Player.Head);
@@ -144,10 +144,12 @@ namespace NEP.MonoDirector.UI
 
         public void OnSceneStart()
         {
-            if(Director.PlayState != PlayheadState.Prerecording)
-            {
-                return;
-            }
+            // TODO:
+            // Adjust for new state machine implementation
+            //if(Director.PlayState != PlayheadState.Prerecording)
+            //{
+            //    return;
+            //}
 
             timecodeText.text = "0s";
             countdownObject.SetActive(true);
@@ -162,15 +164,17 @@ namespace NEP.MonoDirector.UI
         {
             float time = 0f;
 
-            if(playState == PlayheadState.Playing)
-            {
-                time = Playback.Instance.PlaybackTime;
-            }
+            // TODO:
+            // Adjust for new state machine implementation
+            //if(playState == PlayheadState.Playing)
+            //{
+            //time = Playback.Instance.PlaybackTime;
+            //}
 
-            if(playState == PlayheadState.Recording)
-            {
-                time = Recorder.instance.RecordingTime;
-            }
+            //if(playState == PlayheadState.Recording)
+            //{
+            //time = Recorder.instance.RecordingTime;
+            //}
 
             timecodeText.text = time.ToString("0.000") + "s";
         }
@@ -182,12 +186,14 @@ namespace NEP.MonoDirector.UI
 
         public void OnTimerCountdown()
         {
-            countdownObject.SetActive(false);
-            int counter = Director.PlayState == PlayheadState.Prerecording ? Recorder.instance.Countdown : Playback.Instance.Countdown;
-            int currentCountdown = Settings.World.delay - counter;
-            countdownText.text = currentCountdown.ToString();
-            countdownObject.SetActive(true);
-            countdownAnimator.Play("Countdown");
+            // TODO:
+            // Adjust for new state machine implementation
+            //countdownObject.SetActive(false);
+            //int counter = Director.PlayState == PlayheadState.Prerecording ? Recorder.instance.Countdown : Playback.Instance.Countdown;
+            //int currentCountdown = Settings.World.delay - counter;
+            //countdownText.text = currentCountdown.ToString();
+            //countdownObject.SetActive(true);
+            //countdownAnimator.Play("Countdown");
         }
 
         private void OnPlayStateSet(PlayheadState playState)

@@ -98,7 +98,7 @@ namespace NEP.MonoDirector.Audio
 
         public void RecordMicrophone()
         {
-            if (!Settings.World.useMicrophone)
+            if (!Settings.World.UseMicrophone)
             {
                 return;
             }

@@ -1,5 +1,5 @@
 ﻿using NEP.MonoDirector.Actors;
-using NEP.MonoDirector.src.Camera;
+using NEP.MonoDirector.Cameras;
 using NEP.MonoDirector.State;
 
 using System;

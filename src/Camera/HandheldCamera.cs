@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
 using Il2CppSLZ.Marrow;
-using NEP.MonoDirector.src.Camera;
 
 namespace NEP.MonoDirector.Cameras
 {
@@ -114,7 +113,7 @@ namespace NEP.MonoDirector.Cameras
 
         private void LeftHandDetached(Hand hand)
         {
-            if (Settings.Camera.handheldKinematicOnRelease)
+            if (Settings.Camera.KinematicOnRelease)
             {
                 cameraRigidbody.isKinematic = true;
             }
@@ -122,7 +121,7 @@ namespace NEP.MonoDirector.Cameras
 
         private void RightHandDetached(Hand hand)
         {
-            if (Settings.Camera.handheldKinematicOnRelease)
+            if (Settings.Camera.KinematicOnRelease)
             {
                 cameraRigidbody.isKinematic = true;
             }

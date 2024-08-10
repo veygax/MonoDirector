@@ -76,21 +76,23 @@ namespace NEP.MonoDirector.UI
 
         private static void ShowMarkers(PlayheadState playState)
         {
-            if(playState == PlayheadState.Preplaying || playState == PlayheadState.Prerecording)
-            {
-                foreach (var marker in activeMarkers)
-                {
-                    marker.gameObject.SetActive(false);
-                }
-            }
+            // TODO:
+            // Adjust for new state machine implementation
+            //if(playState == PlayheadState.Preplaying || playState == PlayheadState.Prerecording)
+            //{
+            //    foreach (var marker in activeMarkers)
+            //    {
+            //        marker.gameObject.SetActive(false);
+            //    }
+            //}
 
-            if(playState == PlayheadState.Stopped)
-            {
-                foreach (var marker in activeMarkers)
-                {
-                    marker.gameObject.SetActive(true);
-                }
-            }
+            //if(playState == PlayheadState.Stopped)
+            //{
+            //    foreach (var marker in activeMarkers)
+            //    {
+            //        marker.gameObject.SetActive(true);
+            //    }
+            //}
         }
     }
 }

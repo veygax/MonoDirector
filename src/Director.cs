@@ -61,12 +61,12 @@ namespace NEP.MonoDirector.Core
 
         public void Pause()
         {
-            SetPlayState(PlayState.Paused);
+            SetPlayState(null);
         }
 
         public void Record()
         {
-            Recorder.StartRecordRoutine();
+            // Recorder.StartRecordRoutine();
         }
 
         public void Recast(Actor actor)
@@ -98,7 +98,7 @@ namespace NEP.MonoDirector.Core
 
         public void Stop()
         {
-            SetPlayState(PlayState.Stopped);
+            // SetPlayState(PlayState.Stopped);
         }
 
         public void SetCamera(FreeCamera camera)
@@ -143,7 +143,7 @@ namespace NEP.MonoDirector.Core
 
         public void RemoveLastActor()
         {
-            RemoveActor(Recorder.instance.LastActor);
+            // RemoveActor(Recorder.instance.LastActor);
 
             foreach(var prop in LastRecordedProps)
             {

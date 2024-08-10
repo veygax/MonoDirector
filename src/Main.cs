@@ -134,10 +134,7 @@ namespace NEP.MonoDirector
 
         private void CreateSFX()
         {
-            GameObject audioManager = new GameObject("MonoDirector - Audio Manager");
-            audioManager.AddComponent<AudioManager>();
-            GameObject feedback = new GameObject("MonoDirector - Feedback SFX");
-            feedback.AddComponent<FeedbackSFX>();
+
         }
 
         private void CreateUI()

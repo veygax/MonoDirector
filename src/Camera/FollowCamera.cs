@@ -4,8 +4,8 @@ using UnityEngine;
 
 using BoneLib;
 
+using NEP.MonoDirector.Actors;
 using NEP.MonoDirector.Data;
-using NEP.MonoDirector.State;
 
 namespace NEP.MonoDirector.Cameras
 {

@@ -146,14 +146,14 @@ namespace NEP.MonoDirector.Actors
                 previousFrame = nextFrame;
                 nextFrame = frame;
 
-                if (frame.FrameTime > Playback.Instance.PlaybackTime)
+                if (frame.FrameTime > Director.Instance.Playhead.PlaybackTime)
                 {
                     break;
                 }
             }
 
             float gap = nextFrame.FrameTime - previousFrame.FrameTime;
-            float head = Playback.Instance.PlaybackTime - previousFrame.FrameTime;
+            float head = Director.Instance.Playhead.PlaybackTime - previousFrame.FrameTime;
 
             float delta = head / gap;
 
@@ -200,7 +200,7 @@ namespace NEP.MonoDirector.Actors
             {
                 var actionFrame = actionFrames[i];
 
-                if(Playback.Instance.PlaybackTime < actionFrame.timestamp)
+                if(Director.Instance.Playhead.PlaybackTime < actionFrame.timestamp)
                 {
                     continue;
                 }
@@ -222,7 +222,7 @@ namespace NEP.MonoDirector.Actors
         {
             FrameGroup frameGroup = new FrameGroup();
             CaptureBoneFrames(avatarBones);
-            frameGroup.SetFrames(tempFrames, Recorder.instance.RecordingTime);
+            frameGroup.SetFrames(tempFrames, Director.Instance.Playhead.RecordingTime);
             avatarFrames.Add(frameGroup);
         }
 
@@ -407,7 +407,7 @@ namespace NEP.MonoDirector.Actors
             byte[] encodedBarcode = Encoding.UTF8.GetBytes(avatarBarcode.ID);
             bytes.AddRange(BitConverter.GetBytes(encodedBarcode.Length));
             bytes.AddRange(encodedBarcode);
-            bytes.AddRange(BitConverter.GetBytes(Recorder.instance.TakeTime));
+            bytes.AddRange(BitConverter.GetBytes(Director.Instance.Playhead.TakeTime));
             bytes.AddRange(BitConverter.GetBytes(avatarFrames.Count));
 
             foreach (FrameGroup group in avatarFrames)
@@ -454,8 +454,8 @@ namespace NEP.MonoDirector.Actors
                 // Force the take time to be correct
                 // This means if an actor takes a long time on disk
                 // We then match their take time and not ours
-                if (Recorder.instance.TakeTime < takeTime)
-                    Recorder.instance.TakeTime = takeTime;
+                //if (Director.Instance.Playhead.TakeTime < takeTime)
+                    //Director.Instance.Playhead.TakeTime = takeTime;
                 
                 // Then deserialize the frames
                 byte[] frameNumBytes = new byte[sizeof(int)];

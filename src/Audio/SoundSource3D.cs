@@ -65,7 +65,7 @@ namespace NEP.MonoDirector.Audio
 
             source.clip = soundHolder.GetSound();
             soundHolder.gameObject.SetActive(false);
-            Main.feedbackSFX.LinkAudio();
+            FeedbackSFX.Instance.LinkAudio();
         }
 
         private void AttachedHand(Hand hand)
@@ -80,15 +80,18 @@ namespace NEP.MonoDirector.Audio
 
         private void OnPlayStateSet(PlayheadState playState)
         {
-            if (playState == PlayheadState.Preplaying
-            || playState == PlayheadState.Playing)
-            {
-                HideVisuals();
-            }
-            else
-            {
-                ShowVisuals();
-            }
+            // TODO:
+            // Adjust for new state machine implementation
+
+            //if (playState == PlayheadState.Preplaying
+            //|| playState == PlayheadState.Playing)
+            //{
+                //HideVisuals();
+            //}
+            //else
+            //{
+                //ShowVisuals();
+            //}
         }
 
         private void OnStartRecording()

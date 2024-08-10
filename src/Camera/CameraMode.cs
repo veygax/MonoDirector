@@ -1,4 +1,4 @@
-﻿namespace NEP.MonoDirector.Camera
+﻿namespace NEP.MonoDirector.Cameras
 {
     public enum CameraMode
     {

@@ -1,14 +1,19 @@
-﻿using NEP.MonoDirector.Core;
-using NEP.MonoDirector.State;
-
-namespace NEP.MonoDirector
+﻿namespace NEP.MonoDirector
 {
     public sealed class Playhead
     {
         public float PlaybackTime => _playbackTime;
-        public float PlaybackRate => Settings.World.playbackRate;
+        public float PlaybackRate => Settings.World.PlaybackRate;
+
+        public float RecordingTime => _recordingTime;
+
+        public float TakeTime => _takeTime;
 
         private float _playbackTime;
+
+        private float _recordingTime;
+
+        private float _takeTime;
 
         public void Reset()
         {
@@ -22,9 +27,9 @@ namespace NEP.MonoDirector
                 _playbackTime = 0f;
             }
 
-            if (_playbackTime >= Recorder.instance.TakeTime)
+            if (_playbackTime >= _takeTime)
             {
-                _playbackTime = Recorder.instance.TakeTime;
+                _playbackTime = _takeTime;
             }
 
             _playbackTime += amount;

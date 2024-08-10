@@ -31,7 +31,7 @@ namespace NEP.MonoDirector.Cameras
             SetFOV(Input.GetAxisRaw("Mouse ScrollWheel") * fovChangeRate);
         }
 
-        public void SetCamera(Camera camera)
+        public void SetCamera(UnityEngine.Camera camera)
         {
             this.camera = camera;
         }
