@@ -2,8 +2,6 @@
 
 using Il2CppSLZ.Bonelab;
 
-using RigManager = Il2CppSLZ.Marrow.RigManager;
-
 namespace NEP.MonoDirector.Cameras
 {
     public class CameraRigManager

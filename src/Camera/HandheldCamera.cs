@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Il2CppInterop.Runtime.InteropTypes.Fields;
+
+using UnityEngine;
 
 using Il2CppSLZ.Marrow;
 
@@ -9,76 +11,60 @@ namespace NEP.MonoDirector.Cameras
     {
         public HandheldCamera(System.IntPtr ptr) : base(ptr) { }
 
-        private CylinderGrip leftHandle;
-        private CylinderGrip rightHandle;
+        public Il2CppReferenceField<CylinderGrip> leftHandle;
+        public Il2CppReferenceField<CylinderGrip> rightHandle;
 
-        private Transform leftHandleTransform;
-        private Transform rightHandleTransform;
+        public Il2CppReferenceField<Transform> leftHandleTransform;
+        public Il2CppReferenceField<Transform> rightHandleTransform;
 
-        private Camera sensorCamera;
+        public Il2CppReferenceField<Camera> sensorCamera;
 
-        private GameObject backViewfinderScreen;
-        private GameObject frontViewfinderScreen;
-        private GameObject displayScreen;
+        public Il2CppReferenceField<GameObject> backViewfinderScreen;
+        public Il2CppReferenceField<GameObject> frontViewfinderScreen;
+        public Il2CppReferenceField<GameObject> displayScreen;
 
-        private Rigidbody cameraRigidbody;
+        public Il2CppReferenceField<Rigidbody> cameraRigidbody;
 
-        private RenderTexture displayTexture  => sensorCamera.targetTexture;
-
-        private void Awake()
-        {
-            leftHandleTransform = transform.Find("Grips/Left Handle");
-            rightHandleTransform = transform.Find("Grips/Right Handle");
-
-            sensorCamera = transform.Find("Sensor").GetComponent<Camera>();
-            backViewfinderScreen = transform.Find("Viewfinder_Back").gameObject;
-            frontViewfinderScreen = transform.Find("Viewfinder_Front").gameObject;
-            displayScreen = transform.Find("Screen").gameObject;
-
-            leftHandle = leftHandleTransform.GetComponent<CylinderGrip>();
-            rightHandle = rightHandleTransform.GetComponent<CylinderGrip>();
-
-            cameraRigidbody = GetComponent<Rigidbody>();
-        }
+        private RenderTexture displayTexture  => sensorCamera.Get().targetTexture;
 
         private void OnEnable()
         {
             Events.OnCameraModeSet += OnCameraModeChanged;
 
-            leftHandle.attachedUpdateDelegate += new System.Action<Hand>(LeftHandUpdate);
-            rightHandle.attachedUpdateDelegate += new System.Action<Hand>(RightHandUpdate);
-            leftHandle.detachedHandDelegate += new System.Action<Hand>(LeftHandDetached);
-            leftHandle.detachedHandDelegate += new System.Action<Hand>(RightHandDetached);
+            leftHandle.Get().attachedUpdateDelegate += new System.Action<Hand>(LeftHandUpdate);
+            rightHandle.Get().attachedUpdateDelegate += new System.Action<Hand>(RightHandUpdate);
+            leftHandle.Get().detachedHandDelegate += new System.Action<Hand>(LeftHandDetached);
+            leftHandle.Get().detachedHandDelegate += new System.Action<Hand>(RightHandDetached);
         }
 
         private void OnDisable()
         {
             Events.OnCameraModeSet -= OnCameraModeChanged;
 
-            leftHandle.attachedUpdateDelegate -= new System.Action<Hand>(LeftHandUpdate);
-            rightHandle.attachedUpdateDelegate -= new System.Action<Hand>(RightHandUpdate);
-            leftHandle.detachedHandDelegate -= new System.Action<Hand>(LeftHandDetached);
-            leftHandle.detachedHandDelegate -= new System.Action<Hand>(RightHandDetached);
+            leftHandle.Get().attachedUpdateDelegate -= new System.Action<Hand>(LeftHandUpdate);
+            rightHandle.Get().attachedUpdateDelegate -= new System.Action<Hand>(RightHandUpdate);
+            leftHandle.Get().detachedHandDelegate -= new System.Action<Hand>(LeftHandDetached);
+            leftHandle.Get().detachedHandDelegate -= new System.Action<Hand>(RightHandDetached);
         }
 
         private void OnCameraModeChanged(CameraMode mode)
         {
             if(mode == CameraMode.Handheld)
             {
-                displayScreen.active = true;
-                backViewfinderScreen.active = true;
-                frontViewfinderScreen.active = true;
+                displayScreen.Get().active = true;
+                backViewfinderScreen.Get().active = true;
+                frontViewfinderScreen.Get().active = true;
 
                 CameraRigManager.Instance.ClonedCamera.targetTexture = displayTexture;
                 CameraRigManager.Instance.ClonedCamera.gameObject.SetActive(true);
-                CameraRigManager.Instance.FollowCamera.SetFollowTarget(sensorCamera.transform);
-                CameraRigManager.Instance.CameraDisplay.FollowCamera.SetFollowTarget(sensorCamera.transform);
+                CameraRigManager.Instance.FollowCamera.SetFollowTarget(sensorCamera.Get().transform);
+                CameraRigManager.Instance.CameraDisplay.FollowCamera.SetFollowTarget(sensorCamera.Get().transform);
             }
             else
             {
-                displayScreen.active = false;
-                backViewfinderScreen.active = false;
-                frontViewfinderScreen.active = false;
+                displayScreen.Get().active = false;
+                backViewfinderScreen.Get().active = false;
+                frontViewfinderScreen.Get().active = false;
 
                 CameraRigManager.Instance.ClonedCamera.gameObject.SetActive(false);
                 CameraRigManager.Instance.FollowCamera.SetDefaultTarget();
@@ -87,7 +73,7 @@ namespace NEP.MonoDirector.Cameras
 
         private void LeftHandUpdate(Hand hand)
         {
-            cameraRigidbody.isKinematic = false;
+            cameraRigidbody.Get().isKinematic = false;
 
             if (hand.GetIndexTriggerAxis() > 0.25f)
             {
@@ -100,7 +86,7 @@ namespace NEP.MonoDirector.Cameras
          
         private void RightHandUpdate(Hand hand)
         {
-            cameraRigidbody.isKinematic = false;
+            cameraRigidbody.Get().isKinematic = false;
 
             if (hand.GetIndexTriggerAxis() > 0.25f)
             {
@@ -115,7 +101,7 @@ namespace NEP.MonoDirector.Cameras
         {
             if (Settings.Camera.KinematicOnRelease)
             {
-                cameraRigidbody.isKinematic = true;
+                cameraRigidbody.Get().isKinematic = true;
             }
         }
 
@@ -123,7 +109,7 @@ namespace NEP.MonoDirector.Cameras
         {
             if (Settings.Camera.KinematicOnRelease)
             {
-                cameraRigidbody.isKinematic = true;
+                cameraRigidbody.Get().isKinematic = true;
             }
         }
     }

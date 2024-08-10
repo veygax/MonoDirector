@@ -56,7 +56,7 @@ namespace NEP.MonoDirector.Core
         private PlayheadState _playState;
         private PlayheadState _lastPlayState;
 
-        private bool _inNoMode;
+        private bool _inNoMode = true;
         private bool _inPlaybackMode;
         private bool _inRecordingMode;
         private bool _inPhotoMode;
