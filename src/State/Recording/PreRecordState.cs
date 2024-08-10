@@ -1,8 +1,10 @@
-﻿using BoneLib;
+﻿using UnityEngine;
+
+using BoneLib;
+
 using NEP.MonoDirector.Actors;
 using NEP.MonoDirector.Audio;
 using NEP.MonoDirector.Core;
-using UnityEngine;
 
 namespace NEP.MonoDirector.State.Recording
 {

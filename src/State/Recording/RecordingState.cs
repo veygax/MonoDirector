@@ -1,8 +1,8 @@
-﻿using NEP.MonoDirector.Actors;
+﻿using UnityEngine;
+
+using NEP.MonoDirector.Actors;
 using NEP.MonoDirector.Audio;
 using NEP.MonoDirector.Core;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace NEP.MonoDirector.State.Recording
 {
@@ -86,12 +86,12 @@ namespace NEP.MonoDirector.State.Recording
 
             Director.Instance.Playhead.Move(_timeSinceLastTick);
 
-            if (Director.Instance.CaptureState == CaptureState.CaptureCamera)
+            if (Director.Instance.CaptureType == CaptureType.CaptureCamera)
             {
                 // RecordCamera();
             }
 
-            if (Director.Instance.CaptureState == CaptureState.CaptureActor)
+            if (Director.Instance.CaptureType == CaptureType.CaptureActor)
             {
                 RecordActor();
             }

@@ -9,11 +9,6 @@ namespace NEP.MonoDirector.State.Playback
 {
     public sealed class PlaybackState : PlayheadState
     {
-        public override void Start()
-        {
-
-        }
-
         public override void Process()
         {
             if (Director.Instance.Playhead.PlaybackTime > Director.Instance.Playhead.TakeTime)
@@ -26,11 +21,6 @@ namespace NEP.MonoDirector.State.Playback
             Director.Instance.AnimateAll();
             Director.Instance.Playhead.Move(Settings.World.PlaybackRate * Time.deltaTime);
             Events.OnPlaybackTick?.Invoke();
-        }
-
-        public override void Stop()
-        {
-
         }
     }
 }

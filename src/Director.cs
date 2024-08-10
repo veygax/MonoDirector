@@ -34,36 +34,33 @@ namespace NEP.MonoDirector.Core
         public static Director Instance { get; private set; }
 
         public Playhead Playhead { get; private set; }
-
         public PlayheadState PlayState { get => _playState; }
         public PlayheadState LastPlayState { get => _lastPlayState; }
-        public CaptureState CaptureState { get => _captureState; }
+
+        public CaptureType CaptureType { get => _captureType; }
 
         public Actor ActiveActor => _activeActor;
         public Actor LastActor => _lastActor;
 
         public IReadOnlyList<Actor> Cast => _cast.AsReadOnly();
 
-        public IReadOnlyList<Prop> WorldProps => _worldProps;
-        public IReadOnlyList<Prop> RecordingProps => _recordingProps;
-        public IReadOnlyList<Prop> LastRecordedProps => _lastRecordedProps;
+        public IReadOnlyList<Prop> WorldProps => _worldProps.AsReadOnly();
+        public IReadOnlyList<Prop> RecordingProps => _recordingProps.AsReadOnly();
+        public IReadOnlyList<Prop> LastRecordedProps => _lastRecordedProps.AsReadOnly();
 
-        public int WorldTick { get => _worldTick; }
+        private PlayheadState _playState;
+        private PlayheadState _lastPlayState;
+
+        private CaptureType _captureType = CaptureType.CaptureActor;
+
+        private Actor _activeActor;
+        private Actor _lastActor;
 
         private List<Actor> _cast;
 
         private List<Prop> _worldProps;
         private List<Prop> _recordingProps;
         private List<Prop> _lastRecordedProps;
-
-        private Actor _activeActor;
-        private Actor _lastActor;
-
-        private PlayheadState _playState;
-        private PlayheadState _lastPlayState;
-        private CaptureState _captureState = CaptureState.CaptureActor;
-
-        private int _worldTick;
 
         public void ProcessActiveState()
         {
