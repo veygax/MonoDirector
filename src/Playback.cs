@@ -57,7 +57,7 @@ namespace NEP.MonoDirector.Core
         /// </summary>
         public void Tick()
         {
-            if (Director.PlayState != PlayState.Playing)
+            if (Director.PlayState != PlayheadState.Playing)
                 return;
 
             Events.OnPlaybackTick?.Invoke();
@@ -69,9 +69,9 @@ namespace NEP.MonoDirector.Core
         /// </summary>
         public void BeginPlayback()
         {
-            if (Director.LastPlayState == PlayState.Paused)
+            if (Director.LastPlayState == PlayheadState.Paused)
             {
-                Director.instance.SetPlayState(PlayState.Playing);
+                Director.instance.SetPlayState(PlayheadState.Playing);
                 return;
             }
 
@@ -120,7 +120,7 @@ namespace NEP.MonoDirector.Core
         /// </summary>
         public void OnPlaybackTick()
         {
-            if (Director.PlayState == PlayState.Stopped || Director.PlayState == PlayState.Paused)
+            if (Director.PlayState == PlayheadState.Stopped || Director.PlayState == PlayheadState.Paused)
             {
                 return;
             }
@@ -151,26 +151,7 @@ namespace NEP.MonoDirector.Core
             }
         }
 
-        /// <summary>
-        /// Manually seeks the playback head in the provided direction
-        /// Negative seconds will reverse the playback 
-        /// </summary>
-        /// <param name="amount">The amount of seconds to seek the playback</param>
-        public void Seek(float amount)
-        {
-            if (Director.PlayState != PlayState.Stopped)
-                return;
-
-            if (playbackTime <= 0f)
-                playbackTime = 0f;
-
-            if (playbackTime >= Recorder.instance.TakeTime)
-                playbackTime = Recorder.instance.TakeTime;
-
-            AnimateAll();
-
-            playbackTime += amount;
-        }
+        
 
         /// <summary>
         /// Animates all tracked scene objects
@@ -225,10 +206,10 @@ namespace NEP.MonoDirector.Core
 
             Events.OnPlay?.Invoke();
 
-            while (Director.PlayState == PlayState.Playing || Director.PlayState == PlayState.Paused)
+            while (Director.PlayState == PlayheadState.Playing || Director.PlayState == PlayheadState.Paused)
             {
                 // TODO: Replace this with WaitUntil to prevent Coroutine garbage?
-                while (Director.PlayState == PlayState.Paused)
+                while (Director.PlayState == PlayheadState.Paused)
                     yield return null;
 
                 if (PlaybackTime >= Recorder.instance.TakeTime)

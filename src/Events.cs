@@ -1,4 +1,5 @@
 ﻿using NEP.MonoDirector.Actors;
+using NEP.MonoDirector.src.Camera;
 using NEP.MonoDirector.State;
 
 using System;
@@ -67,7 +68,7 @@ namespace NEP.MonoDirector
 
         public static Action OnTimerCountdown;
 
-        public static Action<PlayState> OnPlayStateSet;
+        public static Action<PlayheadState> OnPlayStateSet;
         public static Action<CameraMode> OnCameraModeSet;
 
         public static Action OnPreSnapshot;

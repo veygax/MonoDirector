@@ -59,7 +59,7 @@ namespace NEP.MonoDirector.Core
 
         public void Tick()
         {
-            if (Director.PlayState != PlayState.Recording)
+            if (Director.PlayState != PlayheadState.Recording)
             {
                 return;
             }
@@ -156,7 +156,7 @@ namespace NEP.MonoDirector.Core
         /// </summary>
         public void OnRecordTick()
         {
-            if (Director.PlayState == PlayState.Paused)
+            if (Director.PlayState == PlayheadState.Paused)
             {
                 return;
             }
@@ -266,7 +266,7 @@ namespace NEP.MonoDirector.Core
             }
         }
 
-        public IEnumerator RecordRoutine()
+        public void ProcessRecordFrame()
         {
             Events.OnPreRecord?.Invoke();
 
@@ -282,7 +282,7 @@ namespace NEP.MonoDirector.Core
             
             float perTick = 1.0F / Settings.World.fps;
             
-            while (Director.PlayState == PlayState.Recording || Director.PlayState == PlayState.Paused)
+            while (Director.PlayState == PlayheadState.Recording || Director.PlayState == PlayheadState.Paused)
             {
                 // These are different for a reason!
                 // virtual FPS and real FPS are decoupled here when asked!

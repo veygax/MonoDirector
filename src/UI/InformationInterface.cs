@@ -83,7 +83,7 @@ namespace NEP.MonoDirector.UI
 
         private Animator countdownAnimator;
 
-        private PlayState playState;
+        private PlayheadState playState;
 
         private bool showUI;
         private bool showIcons;
@@ -144,7 +144,7 @@ namespace NEP.MonoDirector.UI
 
         public void OnSceneStart()
         {
-            if(Director.PlayState != PlayState.Prerecording)
+            if(Director.PlayState != PlayheadState.Prerecording)
             {
                 return;
             }
@@ -162,12 +162,12 @@ namespace NEP.MonoDirector.UI
         {
             float time = 0f;
 
-            if(playState == PlayState.Playing)
+            if(playState == PlayheadState.Playing)
             {
                 time = Playback.Instance.PlaybackTime;
             }
 
-            if(playState == PlayState.Recording)
+            if(playState == PlayheadState.Recording)
             {
                 time = Recorder.instance.RecordingTime;
             }
@@ -183,14 +183,14 @@ namespace NEP.MonoDirector.UI
         public void OnTimerCountdown()
         {
             countdownObject.SetActive(false);
-            int counter = Director.PlayState == PlayState.Prerecording ? Recorder.instance.Countdown : Playback.Instance.Countdown;
+            int counter = Director.PlayState == PlayheadState.Prerecording ? Recorder.instance.Countdown : Playback.Instance.Countdown;
             int currentCountdown = Settings.World.delay - counter;
             countdownText.text = currentCountdown.ToString();
             countdownObject.SetActive(true);
             countdownAnimator.Play("Countdown");
         }
 
-        private void OnPlayStateSet(PlayState playState)
+        private void OnPlayStateSet(PlayheadState playState)
         {
             this.playState = playState;
             playmodeText.text = playState.ToString();

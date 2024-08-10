@@ -31,30 +31,18 @@ namespace NEP.MonoDirector
     public class Main : MelonMod
     {
         internal static MelonLogger.Instance Logger;
-
-        public static Main instance;
-
-        public static Director director;
-
-        public static FreeCamera camera;
-
-        public static FeedbackSFX feedbackSFX;
-        public static MDMenu mainMenu;
-
-        public static AssetBundle bundle;
+        internal static AssetBundle _bundle;
 
         public override void OnInitializeMelon()
         {
-            Logger = new MelonLogger.Instance("MonoDirector", System.ConsoleColor.Magenta);
-
-            instance = this;
+            Logger = new MelonLogger.Instance("MonoDirector", System.Drawing.Color.Red);
 
             Directory.CreateDirectory(Constants.dirBase);
             Directory.CreateDirectory(Constants.dirMod);
             Directory.CreateDirectory(Constants.dirSFX);
             Directory.CreateDirectory(Constants.dirImg);
 
-            bundle = GetEmbeddedBundle();
+            _bundle = GetEmbeddedBundle();
 
             BoneLib.Hooking.OnLevelLoaded += (info) => MonoDirectorInitialize();
             AssetWarehouse._onReady += new System.Action(() =>
@@ -130,9 +118,7 @@ namespace NEP.MonoDirector
         private void ResetInstances()
         {
             Events.FlushActions();
-            director = null;
-            camera = null;
-            feedbackSFX = null;
+            Director.Instance.CleanUp();
             PropMarkerManager.CleanUp();
         }
 
@@ -143,18 +129,15 @@ namespace NEP.MonoDirector
 
         private void CreateDirector()
         {
-            GameObject directorObject = new GameObject("MonoDirector - Director");
-            director = directorObject.AddComponent<Director>();
-            director.SetCamera(camera);
+            new Director();
         }
 
         private void CreateSFX()
         {
             GameObject audioManager = new GameObject("MonoDirector - Audio Manager");
             audioManager.AddComponent<AudioManager>();
-
             GameObject feedback = new GameObject("MonoDirector - Feedback SFX");
-            feedbackSFX = feedback.AddComponent<FeedbackSFX>();
+            feedback.AddComponent<FeedbackSFX>();
         }
 
         private void CreateUI()

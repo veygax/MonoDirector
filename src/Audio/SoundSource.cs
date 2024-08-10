@@ -75,10 +75,10 @@ namespace NEP.MonoDirector.Audio
             rb.isKinematic = true;
         }
 
-        private void OnPlayStateSet(PlayState playState)
+        private void OnPlayStateSet(PlayheadState playState)
         {
-            if (playState == PlayState.Preplaying
-            || playState == PlayState.Playing)
+            if (playState == PlayheadState.Preplaying
+            || playState == PlayheadState.Playing)
             {
                 HideVisuals();
             }

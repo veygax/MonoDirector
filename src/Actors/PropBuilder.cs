@@ -117,7 +117,7 @@ namespace NEP.MonoDirector.Actors
             Prop actorProp = gameObject.GetComponent<Prop>();
             bool isProp = actorProp != null;
 
-            if (isProp && Director.PlayState == State.PlayState.Stopped)
+            if (isProp && Director.PlayState == State.PlayheadState.Stopped)
             {
                 MelonLoader.MelonLogger.Msg($"Removing component from {gameObject.name}");
 

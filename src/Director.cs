@@ -1,31 +1,41 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
-using System.Collections.Generic;
+using UnityEngine;
 
 using BoneLib;
 
 using NEP.MonoDirector.Actors;
 using NEP.MonoDirector.Cameras;
 using NEP.MonoDirector.State;
+using NEP.MonoDirector.State.Playback;
+// using NEP.MonoDirector.State.Recording;
 
 namespace NEP.MonoDirector.Core
 {
-    [MelonLoader.RegisterTypeInIl2Cpp]
-    public class Director : MonoBehaviour
+    public class Director
     {
-        public Director(System.IntPtr ptr) : base(ptr) { }
+        internal Director()
+        {
+            Instance = this;
 
-        public static Director instance { get; private set; }
+            Playhead = new Playhead();
 
-        public Playback playback;
-        public Recorder recorder;
+            Cast = new List<Actor>();
+            NPCCast = new List<ActorNPC>();
+            WorldProps = new List<Prop>();
+            RecordingProps = new List<Prop>();
+        }
 
-        public FreeCamera Camera { get => camera; }
-        public CameraVolume Volume { get => camera.GetComponent<CameraVolume>(); }
+        public static Director Instance { get; private set; }
 
-        public static PlayState PlayState { get => playState; }
-        public static PlayState LastPlayState { get => lastPlayState; }
-        public static CaptureState CaptureState { get => captureState; }
+        public Playhead Playhead { get; private set; }
+
+        public FreeCamera Camera { get => _camera; }
+        public CameraVolume Volume { get => _camera.GetComponent<CameraVolume>(); }
+
+        public PlayheadState PlayState { get => _playState; }
+        public PlayheadState LastPlayState { get => _lastPlayState; }
+        public CaptureState CaptureState { get => _captureState; }
 
         public List<Actor> Cast;
         public List<ActorNPC> NPCCast;
@@ -34,76 +44,19 @@ namespace NEP.MonoDirector.Core
         public List<Prop> RecordingProps;
         public List<Prop> LastRecordedProps;
 
-        public int WorldTick { get => worldTick; }
+        public int WorldTick { get => _worldTick; }
 
-        private static PlayState playState = PlayState.Stopped;
-        private static PlayState lastPlayState;
-        private static CaptureState captureState = CaptureState.CaptureActor;
+        private PlayheadState _playState;
+        private PlayheadState _lastPlayState;
+        private CaptureState _captureState = CaptureState.CaptureActor;
 
-        private FreeCamera camera;
+        private FreeCamera _camera;
 
-        private int worldTick;
-
-        private void Awake()
-        {
-            instance = this;
-
-            playback = new Playback();
-            recorder = new Recorder();
-
-            Cast = new List<Actor>();
-            NPCCast = new List<ActorNPC>();
-            WorldProps = new List<Prop>();
-            RecordingProps = new List<Prop>();
-        }
-
-        private void Start()
-        {
-            Events.OnPrePlayback += () => SetPlayState(PlayState.Preplaying);
-            Events.OnPreRecord += () => SetPlayState(PlayState.Prerecording);
-
-            Events.OnPlay += () => SetPlayState(PlayState.Playing);
-            Events.OnStartRecording += () => SetPlayState(PlayState.Recording);
-        }
-
-        private void Update()
-        {
-            if (!Settings.Debug.useKeys)
-            {
-                return;
-            }
-
-            float seekRate = Playback.Instance.PlaybackRate * Time.deltaTime;
-            
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                Playback.Instance.Seek(-seekRate);
-            }
-
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                Playback.Instance.Seek(seekRate);
-            }
-
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                Play();
-            }
-
-            if (Input.GetKeyDown(KeyCode.RightControl))
-            {
-                Record();
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftControl))
-            {
-                Stop();
-            }
-        }
+        private int _worldTick;
 
         public void Play()
         {
-            playback.BeginPlayback();
+            SetPlayState(new PrePlaybackState());
         }
 
         public void Pause()
@@ -113,7 +66,7 @@ namespace NEP.MonoDirector.Core
 
         public void Record()
         {
-            recorder.StartRecordRoutine();
+            Recorder.StartRecordRoutine();
         }
 
         public void Recast(Actor actor)
@@ -150,7 +103,36 @@ namespace NEP.MonoDirector.Core
 
         public void SetCamera(FreeCamera camera)
         {
-            this.camera = camera;
+            this._camera = camera;
+        }
+
+        public void AnimateAll()
+        {
+            foreach (var castMember in Cast)
+            {
+                AnimateActor(castMember);
+            }
+
+            foreach (var prop in WorldProps)
+            {
+                AnimateProp(prop);
+            }
+        }
+
+        public void AnimateActor(Trackable actor)
+        {
+            if (actor != null)
+            {
+                actor.Act();
+            }
+        }
+
+        public void AnimateProp(Prop prop)
+        {
+            if (prop != null)
+            {
+                prop.Act();
+            }
         }
 
         public void RemoveActor(Actor actor)
@@ -173,8 +155,6 @@ namespace NEP.MonoDirector.Core
 
         public void RemoveAllActors()
         {
-            playState = PlayState.Stopped;
-
             for (int i = 0; i < Cast.Count; i++)
             {
                 Cast[i].Delete();
@@ -208,11 +188,25 @@ namespace NEP.MonoDirector.Core
             WorldProps.Clear();
         }
 
-        public void SetPlayState(PlayState state)
+        public void SetPlayState(PlayheadState state)
         {
-            lastPlayState = playState;
-            playState = state;
+            _lastPlayState = _playState;
+
+            if (_lastPlayState != null)
+            {
+                _lastPlayState.Stop();
+            }
+
+            _playState = state;
+
+            _playState.Start();
+
             Events.OnPlayStateSet?.Invoke(state);
+        }
+
+        internal void CleanUp()
+        {
+            Instance = null;
         }
     }
 }

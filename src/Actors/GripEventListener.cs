@@ -60,7 +60,7 @@ namespace NEP.MonoDirector.Actors
 
         private void OnAttach()
         {
-            if(Director.PlayState != State.PlayState.Recording)
+            if(Director.PlayState != State.PlayheadState.Recording)
             {
                 return;
             }
@@ -75,7 +75,7 @@ namespace NEP.MonoDirector.Actors
 
         private void OnDetach()
         {
-            if (Director.PlayState != State.PlayState.Recording)
+            if (Director.PlayState != State.PlayheadState.Recording)
             {
                 return;
             }
@@ -90,7 +90,7 @@ namespace NEP.MonoDirector.Actors
 
         private void OnIndexDown()
         {
-            if (Director.PlayState != State.PlayState.Recording)
+            if (Director.PlayState != State.PlayheadState.Recording)
             {
                 return;
             }
@@ -105,7 +105,7 @@ namespace NEP.MonoDirector.Actors
 
         private void OnMenuTapDown()
         {
-            if (Director.PlayState != State.PlayState.Recording)
+            if (Director.PlayState != State.PlayheadState.Recording)
             {
                 return;
             }

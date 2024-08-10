@@ -13,7 +13,7 @@ namespace NEP.MonoDirector.Patches
         {
             internal static void Postfix(Avatar newAvatar)
             {
-                if(Director.PlayState != State.PlayState.Recording)
+                if(Director.PlayState != State.PlayheadState.Recording)
                 {
                     return;
                 }

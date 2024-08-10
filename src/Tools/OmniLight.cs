@@ -64,11 +64,11 @@ namespace NEP.MonoDirector.Tools
             sprite.SetActive(false);
         }
 
-        private void OnPlayStateSet(PlayState playState)
+        private void OnPlayStateSet(PlayheadState playState)
         {
-            if (playState == PlayState.Preplaying 
-            || playState == PlayState.Playing 
-            || playState == PlayState.Stopped)
+            if (playState == PlayheadState.Preplaying 
+            || playState == PlayheadState.Playing 
+            || playState == PlayheadState.Stopped)
             {
                 HideVisuals();
             }

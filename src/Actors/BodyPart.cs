@@ -1,4 +1,4 @@
-﻿namespace NEP.MonoDirector.State
+﻿namespace NEP.MonoDirector.Actors
 {
     public enum BodyPart
     {

@@ -173,7 +173,7 @@ namespace NEP.MonoDirector.Actors
 
         public virtual void RecordAction(Action action)
         {
-            if (Director.PlayState == State.PlayState.Recording)
+            if (Director.PlayState == State.PlayheadState.Recording)
             {
                 if (!Director.instance.RecordingProps.Contains(this))
                 {

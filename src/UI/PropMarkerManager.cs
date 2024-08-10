@@ -74,9 +74,9 @@ namespace NEP.MonoDirector.UI
             activeMarkers.Remove(marker.gameObject);
         }
 
-        private static void ShowMarkers(PlayState playState)
+        private static void ShowMarkers(PlayheadState playState)
         {
-            if(playState == PlayState.Preplaying || playState == PlayState.Prerecording)
+            if(playState == PlayheadState.Preplaying || playState == PlayheadState.Prerecording)
             {
                 foreach (var marker in activeMarkers)
                 {
@@ -84,7 +84,7 @@ namespace NEP.MonoDirector.UI
                 }
             }
 
-            if(playState == PlayState.Stopped)
+            if(playState == PlayheadState.Stopped)
             {
                 foreach (var marker in activeMarkers)
                 {

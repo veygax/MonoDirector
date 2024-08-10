@@ -13,7 +13,7 @@ namespace NEP.MonoDirector.Patches.Guns
         {
             public static void Postfix(Hand hand)
             {
-                if (Director.PlayState == State.PlayState.Recording)
+                if (Director.PlayState == State.PlayheadState.Recording)
                 {
                     HandReciever reciever = hand.AttachedReceiver;
                     var poolee = reciever.Host.Rb.GetComponent<InteractableHost>();

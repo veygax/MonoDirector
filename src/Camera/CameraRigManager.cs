@@ -3,9 +3,9 @@
 using UnityEngine;
 
 using NEP.MonoDirector.Patches;
-using NEP.MonoDirector.State;
 
 using RigManager = Il2CppSLZ.Marrow.RigManager;
+using NEP.MonoDirector.src.Camera;
 
 namespace NEP.MonoDirector.Cameras
 {
