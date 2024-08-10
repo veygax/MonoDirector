@@ -270,19 +270,25 @@ namespace NEP.MonoDirector.Core
             _worldProps.Add(prop);
         }
 
-        public void AddRecordingProp(Prop prop)
-        {
-            _recordingProps.Add(prop);
-        }
-
         public void AddProps(Prop[] props)
         {
             _worldProps.AddRange(props);
         }
 
+        public void AddRecordingProp(Prop prop)
+        {
+            _recordingProps.Add(prop);
+        }
+
         public void RemoveRecordingProp(Prop prop)
         {
             _recordingProps.Remove(prop);
+        }
+
+        public void TransferRecordingProps()
+        {
+            AddProps(_recordingProps.ToArray());
+            _recordingProps.Clear();
         }
         
         public void ClearLastProps()

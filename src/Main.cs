@@ -92,8 +92,8 @@ namespace NEP.MonoDirector
         private void CreateUI()
         {
             // PropMarkerManager.Initialize();
-            InfoInterfaceManager.Initialize();
-            WarehouseLoader.SpawnFromBarcode(WarehouseLoader.mainMenuBarcode);
+            // InfoInterfaceManager.Initialize();
+            // WarehouseLoader.SpawnFromBarcode(WarehouseLoader.mainMenuBarcode);
         }
 
         private static AssetBundle GetEmbeddedBundle()

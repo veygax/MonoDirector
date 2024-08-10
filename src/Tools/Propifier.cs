@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Il2CppInterop.Runtime.InteropTypes.Fields;
+
+using UnityEngine;
 
 using Il2CppSLZ.Marrow;
 
@@ -19,14 +21,14 @@ namespace NEP.MonoDirector.Tools
 
         public Mode mode;
 
-        public TargetGrip triggerGrip;
-        public Transform firePoint;
-        public float maxRange;
-        public GameObject laserPointer;
-        public Rigidbody rigidbody;
+        public Il2CppReferenceField<TargetGrip> triggerGrip;
+        public Il2CppReferenceField<Transform> firePoint;
+        public Il2CppValueField<float> maxRange;
+        public Il2CppReferenceField<GameObject> laserPointer;
+        public Il2CppReferenceField<Rigidbody> rigidbody;
 
-        public GameObject propModeIcon;
-        public GameObject removeModeIcon;
+        public Il2CppReferenceField<GameObject> propModeIcon;
+        public Il2CppReferenceField<GameObject> removeModeIcon;
 
         public float fireForce = 5f;
 
@@ -34,30 +36,28 @@ namespace NEP.MonoDirector.Tools
 
         private void Awake()
         {
-            gunSFX = GetComponent<GunSFX>();
-            
-            triggerGrip = transform.Find("Grips/HandlePrimaryGrip").GetComponent<TargetGrip>();
-            firePoint = transform.Find("PointOfInterest/FirePoint");
-            laserPointer = transform.Find("Propifier Art/Laser").gameObject;
-            maxRange = 30;
-
-            propModeIcon = transform.Find("Propifier Art/ScreenMode_Prop").gameObject;
-            removeModeIcon = transform.Find("Propifier Art/ScreenMode_Remove").gameObject;
+            maxRange.Set(30f);
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            triggerGrip.attachedHandDelegate += new System.Action<Hand>((hand) => OnAttachHand());
-            triggerGrip.detachedHandDelegate += new System.Action<Hand>((hand) => OnDetachHand());
-            triggerGrip.attachedUpdateDelegate += new System.Action<Hand>((hand) => OnTriggerGripUpdate());
+            triggerGrip.Get().attachedHandDelegate += new System.Action<Hand>((hand) => OnAttachHand());
+            triggerGrip.Get().detachedHandDelegate += new System.Action<Hand>((hand) => OnDetachHand());
+            triggerGrip.Get().attachedUpdateDelegate += new System.Action<Hand>((hand) => OnTriggerGripUpdate());
+        }
+
+        private void OnDisable()
+        {
+            triggerGrip.Get().attachedHandDelegate -= new System.Action<Hand>((hand) => OnAttachHand());
+            triggerGrip.Get().detachedHandDelegate -= new System.Action<Hand>((hand) => OnDetachHand());
+            triggerGrip.Get().attachedUpdateDelegate -= new System.Action<Hand>((hand) => OnTriggerGripUpdate());
         }
 
         private void PrimaryButtonDown()
         {
-            gunSFX.GunShot();
-            rigidbody.AddForce(rigidbody.transform.up - firePoint.forward * fireForce, ForceMode.Impulse);
+            rigidbody.Get().AddForce(rigidbody.Get().transform.up - firePoint.Get().forward * fireForce, ForceMode.Impulse);
 
-            if(Physics.Raycast(firePoint.position, firePoint.forward * maxRange, out RaycastHit hit))
+            if(Physics.Raycast(firePoint.Get().position, firePoint.Get().forward * maxRange, out RaycastHit hit))
             {
                 if(hit.rigidbody == null)
                 {
@@ -84,19 +84,17 @@ namespace NEP.MonoDirector.Tools
 
         public void OnAttachHand()
         {
-            rigidbody = GetComponent<Rigidbody>();
-            laserPointer.SetActive(true);
+            // laserPointer.Get().SetActive(true);
         }
 
         public void OnDetachHand()
         {
-            rigidbody = GetComponent<Rigidbody>();
-            laserPointer.SetActive(false);
+            // laserPointer.Get().SetActive(false);
         }
 
         public void OnTriggerGripUpdate()
         {
-            Hand hand = triggerGrip.GetHand();
+            Hand hand = triggerGrip.Get().GetHand();
             bool bTapped = hand.Controller.GetMenuTap();
 
             if (bTapped)
@@ -120,17 +118,17 @@ namespace NEP.MonoDirector.Tools
         public void SetMode(Mode mode)
         {
             this.mode = mode;
-            gunSFX.DryFire();
+            // gunSFX.DryFire();
 
             if (mode == Mode.Prop)
             {
-                propModeIcon.SetActive(true);
-                removeModeIcon.SetActive(false);
+                propModeIcon.Get().SetActive(true);
+                removeModeIcon.Get().SetActive(false);
             }
             else if (mode == Mode.Remove)
             {
-                propModeIcon.SetActive(false);
-                removeModeIcon.SetActive(true);
+                propModeIcon.Get().SetActive(false);
+                removeModeIcon.Get().SetActive(true);
             }
         }
     }

@@ -72,6 +72,7 @@ namespace NEP.MonoDirector.State.Recording
             activeActor.CloneAvatar();
 
             Director.Instance.CastActor(activeActor);
+            Director.Instance.TransferRecordingProps();
         }
 
         private void ProcessFrame()
