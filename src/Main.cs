@@ -14,6 +14,7 @@ using NEP.MonoDirector.Cameras;
 using NEP.MonoDirector.Core;
 using NEP.MonoDirector.UI;
 using NEP.MonoDirector.Data;
+using BoneLib;
 
 
 namespace NEP.MonoDirector
@@ -44,64 +45,15 @@ namespace NEP.MonoDirector
 
             _bundle = GetEmbeddedBundle();
 
-            BoneLib.Hooking.OnLevelLoaded += (info) => MonoDirectorInitialize();
-            AssetWarehouse._onReady += new System.Action(() =>
+            Hooking.OnLevelLoaded += new Action<LevelInfo>((info) => MonoDirectorInitialize());
+
+            AssetWarehouse._onReady += new Action(() =>
             {
                 AudioClip[] sounds = WarehouseLoader.GetSounds().ToArray();
                 WarehouseLoader.GenerateSpawnablesFromSounds(sounds);
             });
 
             MDBoneMenu.Initialize();
-#if DEBUG
-            Logger.Warning("MONODIRECTOR DEBUG BUILD!");
-
-            // Testing
-            Logger.Warning("Writing test frame data, better hope this doesn't violently crash!!!");
-            Data.ObjectFrame frame = new Data.ObjectFrame();
-            frame.frameTime = 3.141592654F;
-            frame.position = new Vector3(1, -1, 2);
-            frame.rotation = new Quaternion(0.5F, 0.75F, 0.9F, 1.0F).normalized;
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            byte[] frameBytes = frame.ToBinary();
-            sw.Stop();
-            
-            Logger.Msg($"[STOPWATCH]: ToBinary() took {sw.ElapsedMilliseconds}...");
-
-            sw.Restart();
-            
-            using (FileStream file = File.Open("test.mdbf", FileMode.Create))
-            {
-                uint ident = frame.GetBinaryID();
-                file.Write(BitConverter.GetBytes(ident), 0, sizeof(uint));
-                
-                file.Write(frameBytes, 0, frameBytes.Length);
-            };
-            
-            sw.Stop();
-            
-            Logger.Msg($"[STOPWATCH]: Writing MDBF took {sw.ElapsedMilliseconds}...");
-            
-            sw.Restart();
-            
-            // Then try to read it back
-            using (FileStream file = File.Open("test.mdbf", FileMode.Open))
-            {
-                // Seek past the first 4 bytes
-                file.Seek(4, SeekOrigin.Begin);
-                frame.FromBinary(file);
-            }
-
-            sw.Stop();
-
-            Logger.Msg($"[STOPWATCH]: FromBinary() took {sw.ElapsedMilliseconds}...");
-
-            Logger.Msg("READING...");
-            Logger.Msg($"\tFrT = {frame.frameTime}");
-            Logger.Msg($"\tPos = {frame.position}");
-            Logger.Msg($"\tRot = {frame.rotation}");
-#endif
         }
 
         private void MonoDirectorInitialize()
@@ -118,7 +70,7 @@ namespace NEP.MonoDirector
         private void ResetInstances()
         {
             Events.FlushActions();
-            Director.Instance.CleanUp();
+            Director.Instance?.CleanUp();
             PropMarkerManager.CleanUp();
         }
 
@@ -134,7 +86,7 @@ namespace NEP.MonoDirector
 
         private void CreateSFX()
         {
-
+            new FeedbackSFX();
         }
 
         private void CreateUI()

@@ -4,47 +4,60 @@ using UnityEngine;
 
 using BoneLib;
 
+using Il2CppSLZ.Marrow.Utilities;
+
 using NEP.MonoDirector.Actors;
 using NEP.MonoDirector.Cameras;
 using NEP.MonoDirector.State;
 using NEP.MonoDirector.State.Playback;
-// using NEP.MonoDirector.State.Recording;
+using NEP.MonoDirector.State.Recording;
+
+using Avatar = Il2CppSLZ.VRMK.Avatar;
 
 namespace NEP.MonoDirector.Core
 {
-    public class Director
+    public sealed class Director
     {
-        internal Director()
+        public Director()
         {
             Instance = this;
 
             Playhead = new Playhead();
 
-            Cast = new List<Actor>();
-            NPCCast = new List<ActorNPC>();
-            WorldProps = new List<Prop>();
-            RecordingProps = new List<Prop>();
+            _cast = new List<Actor>();
+            _worldProps = new List<Prop>();
+            _recordingProps = new List<Prop>();
+
+            MarrowGame.playerLoop._updateDelegate += new System.Action(() => ProcessActiveState());
         }
 
         public static Director Instance { get; private set; }
 
         public Playhead Playhead { get; private set; }
 
-        public FreeCamera Camera { get => _camera; }
-        public CameraVolume Volume { get => _camera.GetComponent<CameraVolume>(); }
-
         public PlayheadState PlayState { get => _playState; }
         public PlayheadState LastPlayState { get => _lastPlayState; }
         public CaptureState CaptureState { get => _captureState; }
 
-        public List<Actor> Cast;
-        public List<ActorNPC> NPCCast;
+        public Actor ActiveActor => _activeActor;
+        public Actor LastActor => _lastActor;
 
-        public List<Prop> WorldProps;
-        public List<Prop> RecordingProps;
-        public List<Prop> LastRecordedProps;
+        public IReadOnlyList<Actor> Cast => _cast.AsReadOnly();
+
+        public IReadOnlyList<Prop> WorldProps => _worldProps;
+        public IReadOnlyList<Prop> RecordingProps => _recordingProps;
+        public IReadOnlyList<Prop> LastRecordedProps => _lastRecordedProps;
 
         public int WorldTick { get => _worldTick; }
+
+        private List<Actor> _cast;
+
+        private List<Prop> _worldProps;
+        private List<Prop> _recordingProps;
+        private List<Prop> _lastRecordedProps;
+
+        private Actor _activeActor;
+        private Actor _lastActor;
 
         private PlayheadState _playState;
         private PlayheadState _lastPlayState;
@@ -53,6 +66,23 @@ namespace NEP.MonoDirector.Core
         private FreeCamera _camera;
 
         private int _worldTick;
+
+        public void ProcessActiveState()
+        {
+            try
+            {
+                if (_playState == null)
+                {
+                    return;
+                }
+
+                _playState.Process();
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
         public void Play()
         {
@@ -66,10 +96,36 @@ namespace NEP.MonoDirector.Core
 
         public void Record()
         {
-            // Recorder.StartRecordRoutine();
+            SetPlayState(new RecordingState());
         }
 
-        public void Recast(Actor actor)
+        public void Stop()
+        {
+            // SetPlayState(PlayState.Stopped);
+        }
+
+        public void StageActor(Avatar avatar)
+        {
+            _lastActor = _activeActor;
+            _activeActor = new Actor(avatar);
+        }
+
+        public void CastActor(Actor actor)
+        {
+            _cast.Add(actor);
+        }
+
+        public void CastActors(Actor[] actors)
+        {
+            _cast.AddRange(actors);
+        }
+
+        public void UncastActor(Actor actor)
+        {
+            _cast.Remove(actor);
+        }
+
+        public void RecastActor(Actor actor)
         {
             Vector3 actorPosition = actor.Frames[0].TransformFrames[0].position;
             Player.RigManager.Teleport(actorPosition, true);
@@ -85,20 +141,16 @@ namespace NEP.MonoDirector.Core
                 {
                     if (prop.Actor == actor)
                     {
+                        // For the record this only destroys the component.
+                        // NOT the game object.
                         GameObject.Destroy(prop);
                     }
                 }
             }
 
-            Cast.Remove(actor);
-            actor.Delete();
+            RemoveActor(actor);
 
             Record();
-        }
-
-        public void Stop()
-        {
-            // SetPlayState(PlayState.Stopped);
         }
 
         public void SetCamera(FreeCamera camera)
@@ -137,7 +189,7 @@ namespace NEP.MonoDirector.Core
 
         public void RemoveActor(Actor actor)
         {
-            Cast.Remove(actor);
+            UncastActor(actor);
             actor.Delete();
         }
 
@@ -147,7 +199,7 @@ namespace NEP.MonoDirector.Core
 
             foreach(var prop in LastRecordedProps)
             {
-                WorldProps.Remove(prop);
+                _worldProps.Remove(prop);
                 prop.InteractableRigidbody.isKinematic = false;
                 GameObject.Destroy(prop);
             }
@@ -155,12 +207,27 @@ namespace NEP.MonoDirector.Core
 
         public void RemoveAllActors()
         {
-            for (int i = 0; i < Cast.Count; i++)
+            for (int i = 0; i < _cast.Count; i++)
             {
-                Cast[i].Delete();
+                RemoveActor(_cast[i]);
             }
 
-            Cast.Clear();
+            _cast.Clear();
+        }
+
+        public void AddProp(Prop prop)
+        {
+            _worldProps.Add(prop);
+        }
+
+        public void AddRecordingProp(Prop prop)
+        {
+            _recordingProps.Add(prop);
+        }
+
+        public void AddProps(Prop[] props)
+        {
+            _worldProps.AddRange(props);
         }
         
         public void ClearLastProps()
@@ -168,24 +235,24 @@ namespace NEP.MonoDirector.Core
             foreach(var prop in LastRecordedProps)
             {
                 prop.InteractableRigidbody.isKinematic = false;
-                WorldProps.Remove(prop);
+                _worldProps.Remove(prop);
                 GameObject.Destroy(prop);
             }
 
-            LastRecordedProps.Clear();
+            _lastRecordedProps.Clear();
         }
 
         public void ClearScene()
         {
             RemoveAllActors();
             
-            foreach(var prop in WorldProps)
+            foreach(var prop in _worldProps)
             {
                 prop.InteractableRigidbody.isKinematic = false;
                 GameObject.Destroy(prop);
             }
 
-            WorldProps.Clear();
+            _worldProps.Clear();
         }
 
         public void SetPlayState(PlayheadState state)
@@ -198,6 +265,11 @@ namespace NEP.MonoDirector.Core
             }
 
             _playState = state;
+
+            if (_playState == null)
+            {
+                return;
+            }
 
             _playState.Start();
 

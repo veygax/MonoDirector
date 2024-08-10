@@ -66,16 +66,18 @@ namespace NEP.MonoDirector.Tools
 
         private void OnPlayStateSet(PlayheadState playState)
         {
-            if (playState == PlayheadState.Preplaying 
-            || playState == PlayheadState.Playing 
-            || playState == PlayheadState.Stopped)
-            {
-                HideVisuals();
-            }
-            else
-            {
-                ShowVisuals();
-            }
+            // TODO:
+            // Adjust for new state machine system
+            //if (playState == PlayheadState.Preplaying 
+            //|| playState == PlayheadState.Playing 
+            //|| playState == PlayheadState.Stopped)
+            //{
+            //    HideVisuals();
+            //}
+            //else
+            //{
+            //    ShowVisuals();
+            //}
         }
     }
 }

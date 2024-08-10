@@ -15,7 +15,7 @@ public static class Seat
         public static void Postfix(Il2CppSLZ.Marrow.Seat __instance, RigManager rM)
         {
             Main.Logger.Msg("Register Rig");
-            Actor activeActor = Recorder.instance.ActiveActor;
+            Actor activeActor = Director.Instance.ActiveActor;
 
             if(activeActor == null)
             {
@@ -34,7 +34,7 @@ public static class Seat
         {
             Main.Logger.Msg("Deregister Rig");
 
-            Actor activeActor = Recorder.instance.ActiveActor;
+            Actor activeActor = Director.Instance.ActiveActor;
 
             if (activeActor == null)
             {

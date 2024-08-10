@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using Il2CppSLZ.Marrow;
+﻿using NEP.MonoDirector.Actors;
 using NEP.MonoDirector.Core;
 
 using Avatar = Il2CppSLZ.VRMK.Avatar;
@@ -13,16 +12,22 @@ namespace NEP.MonoDirector.Patches
         {
             internal static void Postfix(Avatar newAvatar)
             {
-                if(Director.PlayState != State.PlayheadState.Recording)
-                {
-                    return;
-                }
+                // TODO:
+                // Adjust for new state machine system
+                // See about multiple actors with new control flow
+                // This will remain broken until I figure out a way
+                // to pass a list around with this new system.
 
-                var activeActor = Recorder.instance.ActiveActor;
+                //if(Director.PlayState != State.PlayheadState.Recording)
+                //{
+                //    return;
+                //}
+
+                Actor activeActor = Director.Instance.ActiveActor;
                 activeActor.RecordAction(new System.Action(() => activeActor.SwitchToActor(activeActor)));
                 activeActor.CloneAvatar();
-                Recorder.instance.ActiveActors.Add(activeActor);
-                Recorder.instance.SetActor(newAvatar);
+                // Director.Instance.ActiveActors.Add(activeActor);
+                Director.Instance.StageActor(newAvatar);
             }
         }
     }

@@ -61,7 +61,7 @@ namespace NEP.MonoDirector.UI
 
         public void OnDeleteButtonClicked()
         {
-            Director.instance.RemoveActor(actor);
+            Director.Instance.RemoveActor(actor);
             MDMenu.instance.PreviousPage();
         }
 
@@ -72,7 +72,7 @@ namespace NEP.MonoDirector.UI
 
         public void OnRecastButtonClicked()
         {
-            Director.instance.Recast(actor);
+            Director.Instance.RecastActor(actor);
         }
 
         public void OnShowButtonClicked()

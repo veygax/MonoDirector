@@ -178,8 +178,10 @@ namespace NEP.MonoDirector.Actors
 
         public void OnFootstep(float velocitySqr = 0f)
         {
+            // TODO:
+            // Footsteps used to suck, there could be a better way
             List<AudioClip> clipList = velocitySqr < 3f ? footstepWalkAudio : footstepJogAudio;
-            AudioManager.Instance.PlayAtPosition(clipList[Random.Range(0, clipList.Count)], leftFoot.transform.position);
+            //AudioManager.Instance.PlayAtPosition(clipList[Random.Range(0, clipList.Count)], leftFoot.transform.position);
         }
 
         public void Delete()

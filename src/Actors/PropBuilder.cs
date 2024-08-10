@@ -41,7 +41,7 @@ namespace NEP.MonoDirector.Actors
                 var actorProp = gameObject.AddComponent<GunProp>();
                 actorProp.SetRigidbody(rigidbody);
                 actorProp.SetGun(gameObject.GetComponent<Gun>());
-                Director.instance.RecordingProps.Add(actorProp);
+                Director.Instance.AddProp(actorProp);
 
                 vfxBlip?.CallSpawnEffect();
 
@@ -57,7 +57,7 @@ namespace NEP.MonoDirector.Actors
                 destructableProp.SetRigidbody(rigidbody);
                 destructableProp.SetBreakableObject(gameObject.GetComponent<ObjectDestructible>());
 
-                Director.instance.RecordingProps.Add(destructableProp);
+                Director.Instance.AddRecordingProp(destructableProp);
 
                 vfxBlip?.CallSpawnEffect();
 
@@ -72,7 +72,7 @@ namespace NEP.MonoDirector.Actors
                 var magazineProp = gameObject.AddComponent<Prop>();
                 magazineProp.SetRigidbody(rigidbody);
 
-                Director.instance.RecordingProps.Add(magazineProp);
+                Director.Instance.AddRecordingProp(magazineProp);
 
                 vfxBlip?.CallSpawnEffect();
 
@@ -88,7 +88,7 @@ namespace NEP.MonoDirector.Actors
                 vehicle.SetRigidbody(rigidbody);
                 vehicle.SetVehicle(rigidbody.GetComponent<Atv>());
 
-                Director.instance.RecordingProps.Add(vehicle);
+                Director.Instance.AddRecordingProp(vehicle);
                 vfxBlip?.CallSpawnEffect();
 
                 Events.OnPropCreated?.Invoke(vehicle);
@@ -101,7 +101,7 @@ namespace NEP.MonoDirector.Actors
 
                 var actorProp = gameObject.AddComponent<Prop>();
                 actorProp.SetRigidbody(rigidbody);
-                Director.instance.RecordingProps.Add(actorProp);
+                Director.Instance.AddRecordingProp(actorProp);
 
                 vfxBlip?.CallSpawnEffect();
 
@@ -117,18 +117,20 @@ namespace NEP.MonoDirector.Actors
             Prop actorProp = gameObject.GetComponent<Prop>();
             bool isProp = actorProp != null;
 
-            if (isProp && Director.PlayState == State.PlayheadState.Stopped)
-            {
-                MelonLoader.MelonLogger.Msg($"Removing component from {gameObject.name}");
+            // TODO:
+            // New state machine system
+            //if (isProp && Director.PlayState == State.PlayheadState.Stopped)
+            //{
+            //    MelonLoader.MelonLogger.Msg($"Removing component from {gameObject.name}");
 
-                var prop = actorProp;
-                prop.InteractableRigidbody.isKinematic = false;
-                Director.instance.RecordingProps.Remove(prop);
-                GameObject.Destroy(prop);
-                vfxBlip?.CallDespawnEffect();
+            //    var prop = actorProp;
+            //    prop.InteractableRigidbody.isKinematic = false;
+            //    Director.instance.RecordingProps.Remove(prop);
+            //    GameObject.Destroy(prop);
+            //    vfxBlip?.CallDespawnEffect();
 
-                Events.OnPropRemoved?.Invoke(prop);
-            }
+            //    Events.OnPropRemoved?.Invoke(prop);
+            //}
         }
     }
 }

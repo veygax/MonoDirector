@@ -15,15 +15,20 @@ namespace NEP.MonoDirector.State.Playback
             {
                 throw new NullReferenceException("Playhead is missing from the Director!");
             }
-
-            FeedbackSFX.Instance.BeepHigh();
         }
 
         public override void Process()
         {
             if (Director.Instance.Playhead == null)
             {
-                Stop();
+                Director.Instance.SetPlayState(null);
+                return;
+            }
+
+            if (Director.Instance.Playhead.PlaybackTime > Director.Instance.Playhead.TakeTime)
+            {
+                FeedbackSFX.Instance.Beep();
+                Director.Instance.SetPlayState(null);
                 return;
             }
 

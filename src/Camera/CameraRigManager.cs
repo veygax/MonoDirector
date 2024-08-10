@@ -8,12 +8,11 @@ namespace NEP.MonoDirector.Cameras
 {
     public class CameraRigManager
     {
-        public CameraRigManager()
+        internal CameraRigManager()
         {
-            RigManager rigManager = BoneLib.Player.RigManager;
-            RigScreenOptions screenOptions = rigManager.GetComponent<RigScreenOptions>();
-            RigScreenOptions = screenOptions;
-            Start();
+            Instance = this;
+            RigScreenOptions screenOptions = GameObject.FindObjectOfType<RigScreenOptions>();
+            InitializeCamera(screenOptions);
         }
 
         public static CameraRigManager Instance { get; private set; }
@@ -125,17 +124,15 @@ namespace NEP.MonoDirector.Cameras
         private GameObject cameraObject;
         private CameraMode cameraMode;
 
-        private GameObject cameraModel;
-        private MeshRenderer cameraRenderer;
-
-        private void Start()
-        {
-            Instance = this;
-            InitializeCamera(RigScreenOptions);
-        }
-
         private void InitializeCamera(RigScreenOptions screenOptions)
         {
+            if (screenOptions == null)
+            {
+                return;
+            }
+
+            RigScreenOptions = screenOptions;
+
             Camera = screenOptions.cam;
             cameraObject = Camera.gameObject;
 

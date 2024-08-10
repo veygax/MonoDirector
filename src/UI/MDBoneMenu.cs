@@ -2,10 +2,9 @@ using BoneLib.BoneMenu;
 
 using UnityEngine;
 
+using NEP.MonoDirector.Actors;
 using NEP.MonoDirector.Cameras;
 using NEP.MonoDirector.Core;
-using Il2CppSLZ.Marrow;
-using NEP.MonoDirector.src.Camera;
 
 namespace NEP.MonoDirector.UI
 {
@@ -28,19 +27,19 @@ namespace NEP.MonoDirector.UI
             mdCategory.CreateFunction(
                 "Record", 
                 Color.red, 
-                () => Director.instance.Record()
+                () => Director.Instance.Record()
             );
             
             mdCategory.CreateFunction(
                 "Play", 
                 Color.green, 
-                () => Director.instance.Play()
+                () => Director.Instance.Play()
             );
             
             mdCategory.CreateFunction(
                 "Stop", 
                 Color.red, 
-                () => Director.instance.Stop()
+                () => Director.Instance.Stop()
             );
 
             mdCategory.CreateFunction("Actors", Color.white, () => { MDMenu.instance.gameObject.SetActive(true); });
@@ -125,7 +124,7 @@ namespace NEP.MonoDirector.UI
                 0.1f,
                 float.NegativeInfinity,
                 float.PositiveInfinity,
-                value => Playback.Instance.PlaybackRate = value
+                value => Settings.World.PlaybackRate = value
             );
 
             category.CreateInt(

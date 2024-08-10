@@ -60,10 +60,10 @@ namespace NEP.MonoDirector.Actors
 
         private void OnAttach()
         {
-            if(Director.PlayState != State.PlayheadState.Recording)
-            {
-                return;
-            }
+            //if(Director.PlayState != State.PlayheadState.Recording)
+            //{
+            //    return;
+            //}
 
             if(prop == null)
             {
@@ -75,10 +75,10 @@ namespace NEP.MonoDirector.Actors
 
         private void OnDetach()
         {
-            if (Director.PlayState != State.PlayheadState.Recording)
-            {
-                return;
-            }
+            //if (Director.PlayState != State.PlayheadState.Recording)
+            //{
+            //    return;
+            //}
 
             if (prop == null)
             {
@@ -90,10 +90,12 @@ namespace NEP.MonoDirector.Actors
 
         private void OnIndexDown()
         {
-            if (Director.PlayState != State.PlayheadState.Recording)
-            {
-                return;
-            }
+            // TODO:
+            // Adjust for new state machine implementation
+            //if (Director.PlayState != State.PlayheadState.Recording)
+            //{
+            //    return;
+            //}
 
             if (prop == null)
             {
@@ -105,10 +107,12 @@ namespace NEP.MonoDirector.Actors
 
         private void OnMenuTapDown()
         {
-            if (Director.PlayState != State.PlayheadState.Recording)
-            {
-                return;
-            }
+            // TODO:
+            // Adjust for new state machine implementation
+            //if (Director.PlayState != State.PlayheadState.Recording)
+            //{
+            //    return;
+            //}
 
             if (prop == null)
             {

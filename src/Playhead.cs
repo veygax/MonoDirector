@@ -1,4 +1,4 @@
-﻿namespace NEP.MonoDirector
+﻿namespace NEP.MonoDirector.Core
 {
     public sealed class Playhead
     {
@@ -18,6 +18,8 @@
         public void Reset()
         {
             _playbackTime = 0f;
+            _recordingTime = 0f;
+            _takeTime = 0f;
         }
 
         public void Move(float amount)
@@ -33,6 +35,11 @@
             }
 
             _playbackTime += amount;
+        }
+
+        public void SetTakeTime(float time)
+        {
+            _takeTime = time;
         }
     }
 }

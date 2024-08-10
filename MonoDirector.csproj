@@ -29,11 +29,15 @@
     <EmbeddedResource Include="Resources\md_resources.pack" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="src\Audio\AudioManager.cs" />
+    <Compile Remove="src\Audio\PooledAudio.cs" />
     <Compile Remove="src\BuildInfo.gen.cs" />
     <Compile Remove="src\Modes\PhotoMode.cs" />
     <Compile Remove="src\Modes\Playback.cs" />
     <Compile Remove="src\Modes\Recorder.cs" />
     <Compile Remove="src\Patches\Test.cs" />
+    <Compile Remove="src\Playback.cs" />
+    <Compile Remove="src\Recorder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitattributes" />

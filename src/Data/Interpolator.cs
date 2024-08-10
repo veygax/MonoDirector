@@ -10,7 +10,7 @@ namespace NEP.MonoDirector.Data
     {
         public static float GetPlaybackTime()
         {
-            return Playback.Instance.PlaybackTime;
+            return Director.Instance.Playhead.PlaybackTime;
         }
 
         public static float GetFrameDelta(float nextFrameTime, float previousFrameTime)

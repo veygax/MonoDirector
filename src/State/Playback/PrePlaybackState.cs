@@ -2,6 +2,7 @@
 
 using NEP.MonoDirector.Audio;
 using NEP.MonoDirector.Core;
+using NEP.MonoDirector.Actors;
 
 namespace NEP.MonoDirector.State.Playback
 {
@@ -15,10 +16,9 @@ namespace NEP.MonoDirector.State.Playback
 
         public override void Start()
         {
-            _currentCountdown = Settings.World.Delay;
-            _countdownTimer = 1f;
-            _finishedCountdown = false;
-            _countdownTickReached = false;
+            Director.Instance.Playhead.Reset();
+            InitializeCountdown();
+            PositionActors();
         }
 
         public override void Process()
@@ -29,12 +29,15 @@ namespace NEP.MonoDirector.State.Playback
                 return;
             }
 
-            Stop();
+            Director.Instance.SetPlayState(new PlaybackState());
         }
 
-        public override void Stop()
+        private void InitializeCountdown()
         {
-            Director.Instance.SetPlayState(new PlaybackState());
+            _currentCountdown = Settings.World.Delay;
+            _countdownTimer = 1f;
+            _finishedCountdown = false;
+            _countdownTickReached = false;
         }
 
         private void AdvanceCountdown()
@@ -59,7 +62,22 @@ namespace NEP.MonoDirector.State.Playback
                 return;
             }
 
+            FeedbackSFX.Instance.BeepHigh();
             _finishedCountdown = true;
+        }
+
+        private void PositionActors()
+        {
+            foreach (Actor actor in Director.Instance.Cast)
+            {
+                actor.OnSceneBegin();
+            }
+
+            foreach (Prop prop in Director.Instance.WorldProps)
+            {
+                prop.OnSceneBegin();
+                prop.gameObject.SetActive(true);
+            }
         }
     }
 }

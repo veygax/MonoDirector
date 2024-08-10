@@ -53,14 +53,14 @@ namespace NEP.MonoDirector.Actors
                 previousFrame = nextFrame;
                 nextFrame = frame;
 
-                if (frame.frameTime > Playback.Instance.PlaybackTime)
+                if (frame.frameTime > Director.Instance.Playhead.PlaybackTime)
                 {
                     break;
                 }
             }
 
             float gap = nextFrame.frameTime - previousFrame.frameTime;
-            float head = Playback.Instance.PlaybackTime - previousFrame.frameTime;
+            float head = Director.Instance.Playhead.PlaybackTime - previousFrame.frameTime;
 
             float delta = head / gap;
 
@@ -69,7 +69,7 @@ namespace NEP.MonoDirector.Actors
 
             foreach (ActionFrame actionFrame in actionFrames)
             {
-                if (Playback.Instance.PlaybackTime < actionFrame.timestamp)
+                if (Director.Instance.Playhead.PlaybackTime < actionFrame.timestamp)
                 {
                     continue;
                 }
@@ -92,10 +92,12 @@ namespace NEP.MonoDirector.Actors
 
         public virtual void RecordAction(Action action)
         {
-            if (Director.PlayState == State.PlayheadState.Recording)
-            {
-                actionFrames.Add(new ActionFrame(action, Recorder.instance.RecordingTime));
-            }
+            // TODO:
+            // Use new state machine system
+            //if (Director.PlayState == State.PlayheadState.Recording)
+            //{
+            //    actionFrames.Add(new ActionFrame(action, Recorder.instance.RecordingTime));
+            //}
         }
 
         public void SetTransform(Transform transform)

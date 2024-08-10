@@ -135,7 +135,7 @@ namespace NEP.MonoDirector.Actors
 
             foreach(var actionFrame in actionFrames)
             {
-                if (Playback.Instance.PlaybackTime < actionFrame.timestamp)
+                if (Director.Instance.Playhead.PlaybackTime < actionFrame.timestamp)
                 {
                     continue;
                 }
@@ -156,7 +156,7 @@ namespace NEP.MonoDirector.Actors
                 position = transform.position,
                 rotation = transform.rotation,
                 scale = transform.localScale,
-                frameTime = Recorder.instance.RecordingTime,
+                frameTime = Director.Instance.Playhead.RecordingTime,
                 activeThisFrame = gameObject.activeSelf
             };
 
@@ -173,15 +173,17 @@ namespace NEP.MonoDirector.Actors
 
         public virtual void RecordAction(Action action)
         {
-            if (Director.PlayState == State.PlayheadState.Recording)
-            {
-                if (!Director.instance.RecordingProps.Contains(this))
-                {
-                    return;
-                }
+            // TODO:
+            // Adjust for new state machine system
+            //if (Director.PlayState == State.PlayheadState.Recording)
+            //{
+            //    if (!Director.instance.RecordingProps.Contains(this))
+            //    {
+            //        return;
+            //    }
 
-                actionFrames.Add(new ActionFrame(action, Recorder.instance.RecordingTime));
-            }
+            //    actionFrames.Add(new ActionFrame(action, Recorder.instance.RecordingTime));
+            //}
         }
 
         public void ResetTicks()

@@ -69,7 +69,7 @@ namespace NEP.MonoDirector.Actors
                 position = InteractableRigidbody.position,
                 rotation = InteractableRigidbody.rotation,
                 rigidbodyVelocity = InteractableRigidbody.velocity,
-                frameTime = Recorder.instance.RecordingTime
+                frameTime = Director.Instance.Playhead.RecordingTime
             };
 
             propFrames.Add(objectFrame);
