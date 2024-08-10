@@ -22,11 +22,21 @@ namespace NEP.MonoDirector.Cameras
 
         private void LateUpdate()
         {
+            if (camera == null)
+            {
+                return;
+            }
+
             camera.fieldOfView = Mathf.Lerp(lastFieldOfView, fieldOfView, fovChangeSmoothing * Time.deltaTime);
         }
 
         private void MouseFOV()
         {
+            if (camera == null)
+            {
+                return;
+            }
+
             lastFieldOfView = camera.fieldOfView;
             SetFOV(Input.GetAxisRaw("Mouse ScrollWheel") * fovChangeRate);
         }

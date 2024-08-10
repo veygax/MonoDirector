@@ -30,7 +30,7 @@ namespace NEP.MonoDirector.Cameras
 
         private Transform followTarget;
 
-        protected void Update()
+        private void Update()
         {
             if (followTarget == null)
             {

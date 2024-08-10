@@ -59,7 +59,6 @@ namespace NEP.MonoDirector
         private void MonoDirectorInitialize()
         {
             ResetInstances();
-            CreateCameraManager();
             CreateDirector();
             CreateSFX();
             CreateUI();
@@ -72,11 +71,6 @@ namespace NEP.MonoDirector
             Events.FlushActions();
             Director.Instance?.CleanUp();
             PropMarkerManager.CleanUp();
-        }
-
-        private void CreateCameraManager()
-        {
-            new CameraRigManager();
         }
 
         private void CreateDirector()
