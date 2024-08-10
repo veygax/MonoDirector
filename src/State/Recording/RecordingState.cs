@@ -8,6 +8,8 @@ namespace NEP.MonoDirector.State.Recording
 {
     public sealed class RecordingState : PlayheadState
     {
+        public float RecordingTime => _recordingTime;
+
         private int _recordFrame;
         private float _perTickUpdate;
         private float _timeSinceLastTick;
@@ -33,6 +35,15 @@ namespace NEP.MonoDirector.State.Recording
 
         public override void Process()
         {
+            if (Settings.World.IgnoreSlowmo)
+            {
+                _timeSinceLastTick += Time.deltaTime;
+            }
+            else
+            {
+                _timeSinceLastTick += Time.unscaledDeltaTime;
+            }
+
             if (Settings.World.TemporalScaling)
             {
                 _fpsTimer += Time.unscaledDeltaTime;
@@ -70,6 +81,8 @@ namespace NEP.MonoDirector.State.Recording
             {
                 Director.Instance.Playhead.SetTakeTime(_recordingTime);
             }
+
+            Director.Instance.Playhead.SetRecordingTime(this);
 
             Director.Instance.Playhead.Move(_timeSinceLastTick);
 

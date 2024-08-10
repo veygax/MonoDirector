@@ -63,8 +63,6 @@ namespace NEP.MonoDirector.Core
         private PlayheadState _lastPlayState;
         private CaptureState _captureState = CaptureState.CaptureActor;
 
-        private FreeCamera _camera;
-
         private int _worldTick;
 
         public void ProcessActiveState()
@@ -80,8 +78,31 @@ namespace NEP.MonoDirector.Core
             }
             catch
             {
+                _playState.Stop();
+                SetPlayState(null);
                 throw;
             }
+        }
+
+        public void SetPlayState(PlayheadState state)
+        {
+            _lastPlayState = _playState;
+
+            if (_lastPlayState != null)
+            {
+                _lastPlayState.Stop();
+            }
+
+            _playState = state;
+
+            if (_playState == null)
+            {
+                return;
+            }
+
+            _playState.Start();
+
+            Events.OnPlayStateSet?.Invoke(state);
         }
 
         public void Play()
@@ -96,12 +117,12 @@ namespace NEP.MonoDirector.Core
 
         public void Record()
         {
-            SetPlayState(new RecordingState());
+            SetPlayState(new PreRecordState());
         }
 
         public void Stop()
         {
-            // SetPlayState(PlayState.Stopped);
+            SetPlayState(null);
         }
 
         public void StageActor(Avatar avatar)
@@ -151,11 +172,6 @@ namespace NEP.MonoDirector.Core
             RemoveActor(actor);
 
             Record();
-        }
-
-        public void SetCamera(FreeCamera camera)
-        {
-            this._camera = camera;
         }
 
         public void AnimateAll()
@@ -253,27 +269,6 @@ namespace NEP.MonoDirector.Core
             }
 
             _worldProps.Clear();
-        }
-
-        public void SetPlayState(PlayheadState state)
-        {
-            _lastPlayState = _playState;
-
-            if (_lastPlayState != null)
-            {
-                _lastPlayState.Stop();
-            }
-
-            _playState = state;
-
-            if (_playState == null)
-            {
-                return;
-            }
-
-            _playState.Start();
-
-            Events.OnPlayStateSet?.Invoke(state);
         }
 
         internal void CleanUp()

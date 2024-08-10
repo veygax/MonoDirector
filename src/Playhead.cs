@@ -1,4 +1,6 @@
-﻿namespace NEP.MonoDirector.Core
+﻿using NEP.MonoDirector.State.Recording;
+
+namespace NEP.MonoDirector.Core
 {
     public sealed class Playhead
     {
@@ -19,17 +21,16 @@
         {
             _playbackTime = 0f;
             _recordingTime = 0f;
-            _takeTime = 0f;
         }
 
         public void Move(float amount)
         {
-            if (_playbackTime <= 0f)
+            if (_playbackTime < 0f)
             {
                 _playbackTime = 0f;
             }
 
-            if (_playbackTime >= _takeTime)
+            if (_playbackTime > _takeTime)
             {
                 _playbackTime = _takeTime;
             }
@@ -40,6 +41,11 @@
         public void SetTakeTime(float time)
         {
             _takeTime = time;
+        }
+
+        public void SetRecordingTime(RecordingState recordingState)
+        {
+            _recordingTime = recordingState.RecordingTime;
         }
     }
 }
