@@ -21,25 +21,25 @@ namespace NEP.MonoDirector.Cameras
             { BodyPart.Pelvis, new BodyPartData(Player.PhysicsRig.m_pelvis) }
         };
 
-        public Transform FollowTarget { get => followTarget; }
+        public Transform FollowTarget { get => _followTarget; }
 
         public float delta = 4f;
 
-        private Vector3 positionOffset;
-        private Vector3 rotationEulerOffset;
+        private Vector3 _positionOffset;
+        private Vector3 _rotationEulerOffset;
 
-        private Transform followTarget;
+        private Transform _followTarget;
 
         private void Update()
         {
-            if (followTarget == null)
+            if (_followTarget == null)
             {
                 Main.Logger.Msg("Follow target is null");
                 return;
             }
 
-            transform.position = followTarget.position;
-            transform.rotation = Quaternion.Slerp(transform.rotation, followTarget.rotation, delta * Time.deltaTime);
+            transform.position = _followTarget.position;
+            transform.rotation = Quaternion.Slerp(transform.rotation, _followTarget.rotation, delta * Time.deltaTime);
         }
 
         public void SetDefaultTarget()
@@ -49,35 +49,35 @@ namespace NEP.MonoDirector.Cameras
 
         public void SetFollowTarget(Transform target)
         {
-            followTarget = target;
+            _followTarget = target;
         }
 
         public void SetPositionOffset(Vector3 offset)
         {
-            positionOffset = offset;
+            _positionOffset = offset;
         }
 
         public void SetRotationOffset(Vector3 offset)
         {
-            rotationEulerOffset = offset;
+            _rotationEulerOffset = offset;
         }
 
         public void SetRotationOffset(Quaternion offset)
         {
-            rotationEulerOffset = offset.eulerAngles;
+            _rotationEulerOffset = offset.eulerAngles;
         }
 
         public void SetFollowBone(BodyPart part)
         {
-            positionOffset = Vector3.zero;
-            rotationEulerOffset = Vector3.zero;
+            _positionOffset = Vector3.zero;
+            _rotationEulerOffset = Vector3.zero;
 
             Vector3 point = FollowPoints[part].position;
 
-            followTarget.position = point;
+            _followTarget.position = point;
 
-            followTarget.localPosition = positionOffset;
-            followTarget.localRotation = Quaternion.Euler(rotationEulerOffset);
+            _followTarget.localPosition = _positionOffset;
+            _followTarget.localRotation = Quaternion.Euler(_rotationEulerOffset);
         }
     }
 }
