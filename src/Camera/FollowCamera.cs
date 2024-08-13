@@ -12,14 +12,35 @@ namespace NEP.MonoDirector.Cameras
     [MelonLoader.RegisterTypeInIl2Cpp]
     public class FollowCamera : MonoBehaviour
     {
-        public FollowCamera(System.IntPtr ptr) : base(ptr) { }
+        public readonly Dictionary<BodyPart, BodyPartData> FollowPoints;
 
-        public readonly Dictionary<BodyPart, BodyPartData> FollowPoints = new Dictionary<BodyPart, BodyPartData>()
+        public FollowCamera(System.IntPtr ptr) : base(ptr)
         {
-            { BodyPart.Head, new BodyPartData(CameraRigManager.Instance.RigScreenOptions.TargetTransform) },
-            { BodyPart.Chest, new BodyPartData(Player.PhysicsRig.m_chest) },
-            { BodyPart.Pelvis, new BodyPartData(Player.PhysicsRig.m_pelvis) }
-        };
+            // Log the values of all critical components
+            Main.Logger.Msg($"CameraRigManager.Instance: {(CameraRigManager.Instance != null ? CameraRigManager.Instance.ToString() : "null")}");
+            Main.Logger.Msg($"CameraRigManager.Instance.RigScreenOptions: {(CameraRigManager.Instance != null && CameraRigManager.Instance.RigScreenOptions != null ? CameraRigManager.Instance.RigScreenOptions.ToString() : "null")}");
+            Main.Logger.Msg($"Player.PhysicsRig: {(Player.PhysicsRig != null ? Player.PhysicsRig.ToString() : "null")}");
+            Main.Logger.Msg($"Player.PhysicsRig.m_chest: {(Player.PhysicsRig != null && Player.PhysicsRig.m_chest != null ? Player.PhysicsRig.m_chest.ToString() : "null")}");
+            Main.Logger.Msg($"Player.PhysicsRig.m_pelvis: {(Player.PhysicsRig != null && Player.PhysicsRig.m_pelvis != null ? Player.PhysicsRig.m_pelvis.ToString() : "null")}");
+
+            if (CameraRigManager.Instance == null ||
+                CameraRigManager.Instance.RigScreenOptions == null ||
+                Player.PhysicsRig == null ||
+                Player.PhysicsRig.m_chest == null ||
+                Player.PhysicsRig.m_pelvis == null)
+            {
+                Main.Logger.Error("Critical components are not initialized :(");
+                return;
+            }
+
+            FollowPoints = new Dictionary<BodyPart, BodyPartData>()
+    {
+        { BodyPart.Head, new BodyPartData(CameraRigManager.Instance.RigScreenOptions.TargetTransform) },
+        { BodyPart.Chest, new BodyPartData(Player.PhysicsRig.m_chest) },
+        { BodyPart.Pelvis, new BodyPartData(Player.PhysicsRig.m_pelvis) }
+    };
+        }
+
 
         public Transform FollowTarget { get => _followTarget; }
 
