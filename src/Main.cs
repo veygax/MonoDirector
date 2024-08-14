@@ -70,7 +70,7 @@ namespace NEP.MonoDirector
         {
             Events.FlushActions();
             Director.Instance?.CleanUp();
-            PropMarkerManager.CleanUp();
+            //PropMarkerManager.CleanUp();
         }
 
         private void CreateDirector()
