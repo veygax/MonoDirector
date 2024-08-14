@@ -60,10 +60,10 @@ namespace NEP.MonoDirector.Actors
 
         private void OnAttach()
         {
-            //if(Director.PlayState != State.PlayheadState.Recording)
-            //{
-            //    return;
-            //}
+            if(!Director.Instance.InRecordingMode)
+            {
+                return;
+            }
 
             if(prop == null)
             {
@@ -75,10 +75,10 @@ namespace NEP.MonoDirector.Actors
 
         private void OnDetach()
         {
-            //if (Director.PlayState != State.PlayheadState.Recording)
-            //{
-            //    return;
-            //}
+            if (!Director.Instance.InRecordingMode)
+            {
+                return;
+            }
 
             if (prop == null)
             {

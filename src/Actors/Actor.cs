@@ -21,8 +21,8 @@ namespace NEP.MonoDirector.Actors
         public Actor() : base()
         {
 #if DEBUG
-            previousFrameDebugger = new Transform[55];
-            nextFrameDebugger = new Transform[55];
+            _previousFrameDebugger = new Transform[55];
+            _nextFrameDebugger = new Transform[55];
 
             GameObject baseCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
@@ -34,8 +34,8 @@ namespace NEP.MonoDirector.Actors
             
             for (int i = 0; i < 55; i++)
             {
-                previousFrameDebugger[i] = GameObject.Instantiate(empty).transform;
-                nextFrameDebugger[i] = GameObject.Instantiate(empty).transform;
+                _previousFrameDebugger[i] = GameObject.Instantiate(empty).transform;
+                _nextFrameDebugger[i] = GameObject.Instantiate(empty).transform;
             }
 
             GameObject.Destroy(baseCube);
@@ -45,17 +45,17 @@ namespace NEP.MonoDirector.Actors
         public Actor(Il2CppSLZ.VRMK.Avatar avatar) : this()
         {
             RigManager rigManager = BoneLib.Player.RigManager;
-            avatarBarcode = rigManager.AvatarCrate.Barcode;
+            _avatarBarcode = rigManager.AvatarCrate.Barcode;
             
-            playerAvatar = avatar;
+            _playerAvatar = avatar;
 
-            avatarBones = GetAvatarBones(playerAvatar);
-            avatarFrames = new List<FrameGroup>();
+            _avatarBones = GetAvatarBones(_playerAvatar);
+            _avatarFrames = new List<FrameGroup>();
 
             GameObject micObject = new GameObject("Actor Microphone");
-            microphone = micObject.AddComponent<ActorSpeech>();
+            _microphone = micObject.AddComponent<ActorSpeech>();
 
-            tempFrames = new ObjectFrame[avatarBones.Length];
+            _tempFrames = new ObjectFrame[_avatarBones.Length];
             OwnedProps = new List<Prop>();
         }
 
@@ -69,48 +69,48 @@ namespace NEP.MonoDirector.Actors
         };
 
 
-        private Barcode avatarBarcode;
-        public Barcode AvatarBarcode => avatarBarcode;
+        private Barcode _avatarBarcode;
+        public Barcode AvatarBarcode => _avatarBarcode;
         
-        public Avatar PlayerAvatar { get => playerAvatar; }
-        public Avatar ClonedAvatar { get => clonedAvatar; }
-        public Transform[] AvatarBones { get => avatarBones; }
+        public Avatar PlayerAvatar => _playerAvatar;
+        public Avatar ClonedAvatar => _clonedAvatar;
+        public Transform[] AvatarBones => _avatarBones;
 
         public List<Prop> OwnedProps { get; private set; }
-        public IReadOnlyList<FrameGroup> Frames => avatarFrames.AsReadOnly();
+        public IReadOnlyList<FrameGroup> Frames => _avatarFrames.AsReadOnly();
 
-        public ActorBody ActorBody { get => body; }
-        public ActorSpeech Microphone { get => microphone; }
-        public Texture2D AvatarPortrait { get => avatarPortrait; }
+        public ActorBody ActorBody => _body;
+        public ActorSpeech Microphone => _microphone;
+        public Texture2D AvatarPortrait => _avatarPortrait;
 
-        public bool Seated { get => activeSeat != null; }
+        public bool Seated => _activeSeat != null;
 
-        protected List<FrameGroup> avatarFrames;
+        protected List<FrameGroup> _avatarFrames;
 
-        private ActorBody body;
-        private ActorSpeech microphone;
-        private Texture2D avatarPortrait;
+        private ActorBody _body;
+        private ActorSpeech _microphone;
+        private Texture2D _avatarPortrait;
 
-        private Il2CppSLZ.Marrow.Seat activeSeat;
+        private Il2CppSLZ.Marrow.Seat _activeSeat;
 
-        private Avatar playerAvatar;
-        private Avatar clonedAvatar;
+        private Avatar _playerAvatar;
+        private Avatar _clonedAvatar;
 
-        private ObjectFrame[] tempFrames;
+        private ObjectFrame[] _tempFrames;
 
-        private Transform[] avatarBones;
-        private Transform[] clonedRigBones;
+        private Transform[] _avatarBones;
+        private Transform[] _clonedRigBones;
 
-        private FrameGroup previousFrame;
-        private FrameGroup nextFrame;
+        private FrameGroup _previousFrame;
+        private FrameGroup _nextFrame;
 
-        private Transform lastPelvisParent;
-        private int headIndex;
+        private Transform _lastPelvisParent;
+        private int _headIndex;
         
         // Debug build stuff
         #if DEBUG
-        private Transform[] previousFrameDebugger;
-        private Transform[] nextFrameDebugger;
+        private Transform[] _previousFrameDebugger;
+        private Transform[] _nextFrameDebugger;
         #endif
 
         public override void OnSceneBegin()
@@ -119,29 +119,29 @@ namespace NEP.MonoDirector.Actors
 
             for (int i = 0; i < 55; i++)
             {
-                var bone = clonedRigBones[i];
+                var bone = _clonedRigBones[i];
 
                 if (bone == null)
                 {
                     continue;
                 }
                 
-                bone.position = avatarFrames[0].TransformFrames[i].position;
-                bone.rotation = avatarFrames[0].TransformFrames[i].rotation;
+                bone.position = _avatarFrames[0].TransformFrames[i].position;
+                bone.rotation = _avatarFrames[0].TransformFrames[i].rotation;
             }
         }
 
         public override void Act()
         {
-            previousFrame = new FrameGroup();
-            nextFrame = new FrameGroup();
+            _previousFrame = new FrameGroup();
+            _nextFrame = new FrameGroup();
 
-            for(int i = 0; i < avatarFrames.Count; i++)
+            for(int i = 0; i < _avatarFrames.Count; i++)
             {
-                var frame = avatarFrames[i];
+                var frame = _avatarFrames[i];
 
-                previousFrame = nextFrame;
-                nextFrame = frame;
+                _previousFrame = _nextFrame;
+                _nextFrame = frame;
 
                 if (frame.FrameTime > Director.Instance.Playhead.PlaybackTime)
                 {
@@ -149,13 +149,13 @@ namespace NEP.MonoDirector.Actors
                 }
             }
 
-            float gap = nextFrame.FrameTime - previousFrame.FrameTime;
-            float head = Director.Instance.Playhead.PlaybackTime - previousFrame.FrameTime;
+            float gap = _nextFrame.FrameTime - _previousFrame.FrameTime;
+            float head = Director.Instance.Playhead.PlaybackTime - _previousFrame.FrameTime;
 
             float delta = head / gap;
 
-            ObjectFrame[] previousTransformFrames = previousFrame.TransformFrames;
-            ObjectFrame[] nextTransformFrames = nextFrame.TransformFrames;
+            ObjectFrame[] previousTransformFrames = _previousFrame.TransformFrames;
+            ObjectFrame[] nextTransformFrames = _nextFrame.TransformFrames;
 
             for (int i = 0; i < 55; i++)
             {
@@ -175,7 +175,7 @@ namespace NEP.MonoDirector.Actors
                 Quaternion previousRotation = previousTransformFrames[i].rotation;
                 Quaternion nextRotation = nextTransformFrames[i].rotation;
 
-                var bone = clonedRigBones[i];
+                var bone = _clonedRigBones[i];
 
                 if(bone == null)
                 {
@@ -185,11 +185,11 @@ namespace NEP.MonoDirector.Actors
                 bone.position = Vector3.Lerp(previousPosition, nextPosition, delta);
                 bone.rotation = Quaternion.Slerp(previousRotation, nextRotation, delta);
 #if DEBUG
-                previousFrameDebugger[i].position = previousPosition;
-                previousFrameDebugger[i].rotation = previousRotation;
+                _previousFrameDebugger[i].position = previousPosition;
+                _previousFrameDebugger[i].rotation = previousRotation;
                 
-                nextFrameDebugger[i].position = nextPosition;
-                nextFrameDebugger[i].rotation = nextRotation;
+                _nextFrameDebugger[i].position = nextPosition;
+                _nextFrameDebugger[i].rotation = nextRotation;
 #endif
             }
             
@@ -207,8 +207,8 @@ namespace NEP.MonoDirector.Actors
                 }
             }
 
-            microphone?.Playback();
-            microphone?.UpdateJaw();
+            _microphone?.Playback();
+            _microphone?.UpdateJaw();
         }
 
         /// <summary>
@@ -218,34 +218,34 @@ namespace NEP.MonoDirector.Actors
         public override void RecordFrame()
         {
             FrameGroup frameGroup = new FrameGroup();
-            CaptureBoneFrames(avatarBones);
-            frameGroup.SetFrames(tempFrames, Director.Instance.Playhead.RecordingTime);
-            avatarFrames.Add(frameGroup);
+            CaptureBoneFrames(_avatarBones);
+            frameGroup.SetFrames(_tempFrames, Director.Instance.Playhead.RecordingTime);
+            _avatarFrames.Add(frameGroup);
         }
 
         public void CloneAvatar()
         {
-            GameObject clonedAvatarObject = GameObject.Instantiate(playerAvatar.gameObject);
-            clonedAvatar = clonedAvatarObject.GetComponent<Avatar>();
+            GameObject clonedAvatarObject = GameObject.Instantiate(_playerAvatar.gameObject);
+            _clonedAvatar = clonedAvatarObject.GetComponent<Avatar>();
 
-            clonedAvatar.gameObject.SetActive(true);
+            _clonedAvatar.gameObject.SetActive(true);
 
-            body = new ActorBody(this, BoneLib.Player.PhysicsRig);
+            _body = new ActorBody(this, BoneLib.Player.PhysicsRig);
 
             // stops position overrides, if there are any
-            clonedAvatar.GetComponent<Animator>().enabled = false;
+            _clonedAvatar.GetComponent<Animator>().enabled = false;
 
-            clonedRigBones = GetAvatarBones(clonedAvatar);
+            _clonedRigBones = GetAvatarBones(_clonedAvatar);
 
-            GameObject.Destroy(clonedAvatar.GetComponent<LODGroup>());
+            GameObject.Destroy(_clonedAvatar.GetComponent<LODGroup>());
 
             actorName = BoneLib.Player.RigManager.AvatarCrate.Crate.Title;
-            clonedAvatar.name = actorName;
-            ShowHairMeshes(clonedAvatar);
+            _clonedAvatar.name = actorName;
+            ShowHairMeshes(_clonedAvatar);
 
-            microphone.SetAvatar(clonedAvatar);
+            _microphone.SetAvatar(_clonedAvatar);
 
-            clonedAvatar.gameObject.SetActive(true);
+            _clonedAvatar.gameObject.SetActive(true);
 
             // avatarPortrait = AvatarPhotoBuilder.avatarPortraits[actorName];
 
@@ -254,18 +254,18 @@ namespace NEP.MonoDirector.Actors
 
         public void SwitchToActor(Actor actor)
         {
-            clonedAvatar.gameObject.SetActive(false);
-            actor.clonedAvatar.gameObject.SetActive(true);
+            _clonedAvatar.gameObject.SetActive(false);
+            actor._clonedAvatar.gameObject.SetActive(true);
         }
 
         public override void Delete()
         {
             Events.OnActorUncasted?.Invoke(this);
-            body.Delete();
-            GameObject.Destroy(clonedAvatar.gameObject);
-            GameObject.Destroy(microphone.gameObject);
-            microphone = null;
-            avatarFrames.Clear();
+            _body.Delete();
+            GameObject.Destroy(_clonedAvatar.gameObject);
+            GameObject.Destroy(_microphone.gameObject);
+            _microphone = null;
+            _avatarFrames.Clear();
             DeleteOwnedProps();
         }
 
@@ -288,13 +288,13 @@ namespace NEP.MonoDirector.Actors
 
         public void ParentToSeat(Il2CppSLZ.Marrow.Seat seat)
         {
-            activeSeat = seat;
+            _activeSeat = seat;
 
-            Transform pelvis = clonedAvatar.animator.GetBoneTransform(HumanBodyBones.Hips);
+            Transform pelvis = _clonedAvatar.animator.GetBoneTransform(HumanBodyBones.Hips);
 
-            lastPelvisParent = pelvis.GetParent();
+            _lastPelvisParent = pelvis.GetParent();
 
-            Vector3 seatOffset = new Vector3(seat._buttOffset.x, Mathf.Abs(seat._buttOffset.y) * clonedAvatar.heightPercent, seat._buttOffset.z);
+            Vector3 seatOffset = new Vector3(seat._buttOffset.x, Mathf.Abs(seat._buttOffset.y) * _clonedAvatar.heightPercent, seat._buttOffset.z);
 
             pelvis.SetParent(seat.transform);
 
@@ -304,9 +304,9 @@ namespace NEP.MonoDirector.Actors
 
         public void UnparentSeat()
         {
-            activeSeat = null;
-            Transform pelvis = clonedAvatar.animator.GetBoneTransform(HumanBodyBones.Hips);
-            pelvis.SetParent(lastPelvisParent);
+            _activeSeat = null;
+            Transform pelvis = _clonedAvatar.animator.GetBoneTransform(HumanBodyBones.Hips);
+            pelvis.SetParent(_lastPelvisParent);
         }
 
         private void ShowHairMeshes(Avatar avatar)
@@ -338,7 +338,7 @@ namespace NEP.MonoDirector.Actors
             {
                 if (boneList[i] == null)
                 {
-                    tempFrames[i] = new ObjectFrame(default, default);
+                    _tempFrames[i] = new ObjectFrame(default, default);
                     continue;
                 }
 
@@ -346,13 +346,13 @@ namespace NEP.MonoDirector.Actors
                 Quaternion boneRotation = boneList[i].rotation;
 
                 ObjectFrame frame = new ObjectFrame(bonePosition, boneRotation);
-                tempFrames[i] = frame;
+                _tempFrames[i] = frame;
             }
 
             // Undo the head offset... afterward because no branching :P
             // This undoes it for every bone we count under it too!
             foreach (int headBone in HeadBones)
-                tempFrames[headBone].position += Patches.PlayerAvatarArtPatches.UpdateAvatarHead.calculatedHeadOffset;
+                _tempFrames[headBone].position += Patches.PlayerAvatarArtPatches.UpdateAvatarHead.calculatedHeadOffset;
         }
 
         private Transform[] GetAvatarBones(Avatar avatar)
@@ -401,13 +401,13 @@ namespace NEP.MonoDirector.Actors
             //
             bytes.AddRange(BitConverter.GetBytes((short)VersionNumber.V1));
             
-            byte[] encodedBarcode = Encoding.UTF8.GetBytes(avatarBarcode.ID);
+            byte[] encodedBarcode = Encoding.UTF8.GetBytes(_avatarBarcode.ID);
             bytes.AddRange(BitConverter.GetBytes(encodedBarcode.Length));
             bytes.AddRange(encodedBarcode);
             bytes.AddRange(BitConverter.GetBytes(Director.Instance.Playhead.TakeTime));
-            bytes.AddRange(BitConverter.GetBytes(avatarFrames.Count));
+            bytes.AddRange(BitConverter.GetBytes(_avatarFrames.Count));
 
-            foreach (FrameGroup group in avatarFrames)
+            foreach (FrameGroup group in _avatarFrames)
                 bytes.AddRange(group.ToBinary());
 
             return bytes.ToArray();
@@ -439,7 +439,7 @@ namespace NEP.MonoDirector.Actors
                 // avatarBarcode = Encoding.UTF8.GetString(strBytes);
                 
 #if DEBUG
-                Main.Logger.Msg($"[ACTOR]: Barcode: {avatarBarcode}");
+                Main.Logger.Msg($"[ACTOR]: Barcode: {_avatarBarcode}");
 #endif
                 
                 // Then the take
@@ -472,7 +472,7 @@ namespace NEP.MonoDirector.Actors
                     frameGroups[f].FromBinary(stream);
                 }
 
-                avatarFrames = new List<FrameGroup>(frameGroups);
+                _avatarFrames = new List<FrameGroup>(frameGroups);
             }
         }
 
