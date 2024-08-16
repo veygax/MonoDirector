@@ -46,7 +46,7 @@ namespace NEP.MonoDirector.Cameras
                     // Disable any effects that we have on the camera
                     FreeCamera.enabled = false;
                     CameraDamp.enabled = false;
-                    FollowCamera.enabled = false;
+                    // FollowCamera.enabled = false;
 
                     // Override any effects
                     SmoothFollower.enabled = true;
@@ -60,7 +60,7 @@ namespace NEP.MonoDirector.Cameras
                     FreeCamera.enabled = true;
 
                     CameraDamp.enabled = false;
-                    FollowCamera.enabled = false;
+                    // FollowCamera.enabled = false;
                 }
 
                 // Modified spectator camera with smooth rotations and custom targets
@@ -69,7 +69,7 @@ namespace NEP.MonoDirector.Cameras
                     SmoothFollower.enabled = false;
 
                     CameraDamp.enabled = false;
-                    FollowCamera.enabled = true;
+                    // FollowCamera.enabled = true;
 
                     FreeCamera.enabled = false;
                 }
@@ -145,7 +145,7 @@ namespace NEP.MonoDirector.Cameras
 
             FreeCamera = cameraObject.AddComponent<FreeCamera>();
             FOVController = cameraObject.AddComponent<FOVController>();
-            FollowCamera = cameraObject.AddComponent<FollowCamera>();
+            // FollowCamera = cameraObject.AddComponent<FollowCamera>();
             CameraDamp = cameraObject.AddComponent<CameraDamp>();
 
             CameraVolumes = new CameraVolume[2]
@@ -160,7 +160,7 @@ namespace NEP.MonoDirector.Cameras
 
             CameraMode = CameraMode.None;
 
-            FollowCamera.SetFollowTarget(SmoothFollower.targetTransform);
+            // FollowCamera.SetFollowTarget(SmoothFollower.targetTransform);
 
             CameraDisplay = ClonedCamera.gameObject.AddComponent<CameraDisplay>();
         }
